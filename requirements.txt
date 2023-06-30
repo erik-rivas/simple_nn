@@ -1,0 +1,9 @@
+matplotlib
+numpy
+pyqt5
+scikit-learn
+torch 
+torchvision 
+torchaudio
+jupyterlab
+pytest
