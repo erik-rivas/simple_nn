@@ -17,11 +17,15 @@ class Layer_Dense:
 
         return self.output
 
-    def backward(self, gradients):
-        self.weights_gradients = np.dot(self.inputs.T, gradients)
+    def backward(self, gradients: np.ndarray):
+        self.weights_gradients = np.dot(self.inputs.T, gradients).reshape(
+            self.weights.shape
+        )
         self.biases_gradients = np.sum(gradients, axis=0, keepdims=True)
-        self.input_gradients = np.dot(gradients, self.weights.T)
 
     def update(self, lr):
         self.weights -= lr * self.weights_gradients
         self.biases -= lr * self.biases_gradients
+
+    def __str__(self) -> str:
+        return f"{self.weights.flatten()}, {self.biases.flatten()}"

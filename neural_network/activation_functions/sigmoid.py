@@ -9,7 +9,13 @@ def sigmoid(z):
 
 
 def sigmoid_derivative(z):
-    return np.exp(-z) / ((1 + np.exp(-z)) ** 2)
+    # compute the derivative of the sigmoid function ASSUMING
+    # that x has already been passed through the 'sigmoid'
+    # function
+    return z * (1 - z)
+
+    # den = (1 + np.exp(-z)) ** 2
+    # return np.exp(-z) / den
 
 
 class Activation_Sigmoid(Activation):
@@ -27,6 +33,7 @@ class Activation_Sigmoid(Activation):
 
     def update(self, learning_rate=None):
         pass
+
 
 if __name__ == "__main__":
     x = np.linspace(-10, 10, 100)

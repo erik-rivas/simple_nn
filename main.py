@@ -15,8 +15,8 @@ def test_train(features, labels):
 
     nn = NeuralNetwork(layers=layers, learning_rate=0.1)
 
-    features=np.array(features)
-    labels=np.array(labels)
+    features = np.array(features)
+    labels = np.array(labels)
 
     nn.train(X=features, y_true=labels, epochs=1000, print_every=100)
 
@@ -26,12 +26,34 @@ def test_train(features, labels):
 
 
 if __name__ == "__main__":
-
     features = [
         [8, 10],
         [2, -10],
     ]
-    labels = [[1.0], [0.0]]
+    labels = [
+        [1.0],
+        [0.0],
+    ]
+    data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=75)
+
+    features = data[0]
+    labels = data[1]
 
     res = test_train(features, labels)
-    print(res)
+
+    x = np.linspace(0, 11, 10)
+    y = -x + 5
+
+    fig, (ax1, ax2) = plt.subplots(2, 1)
+    fig.suptitle('Train neural network')
+
+    ax1.plot(x, y)
+    ax1.scatter(features[:, 0], features[:, 1], c=labels, cmap="coolwarm")
+    ax1.set_ylabel('Y True')
+
+    ax2.plot(x, y)
+    ax2.scatter(features[:, 0], features[:, 1], c=res, cmap="PiYG")
+    ax2.set_ylabel('Y True')
+
+    plt.show()
+
