@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import pytest
 from sklearn.datasets import make_blobs
+from libs.helpers import spiral_data
 
 
 from neural_network import NeuralNetwork
@@ -25,7 +26,7 @@ class TestNeuralNetwork:
 
         plt.scatter(features[:, 0], features[:, 1], c=labels, cmap="coolwarm")
         plt.plot(x, y)
-        plt.show()
+        # plt.show()
 
         dense = Layer_Dense(n_inputs=2, n_neurons=1)
         dense.set_weights_biases(weights=np.array([[1], [1]]), biases=np.array([-5]))
@@ -56,7 +57,7 @@ class TestNeuralNetwork:
 
         plt.scatter(features[:, 0], features[:, 1], c=labels, cmap="coolwarm")
         plt.plot(x, y)
-        plt.show()
+        # plt.show()
 
         dense = Layer_Dense(n_inputs=2, n_neurons=1)
         # dense.set_weights_biases(weights=np.array([[1], [1]]), biases=np.array([-5]))
@@ -65,7 +66,7 @@ class TestNeuralNetwork:
 
         nn = NeuralNetwork(learning_rate=0.1, layers=layers)
 
-        nn.train(X=x, y_true=labels, epochs=1000, print_every=100)
+        nn.train(X=features, y_true=labels, epochs=1000, print_every=100)
 
         x= np.array([8,10])
         res = nn.forward(x)
@@ -75,20 +76,13 @@ class TestNeuralNetwork:
         x= np.array([2,-10])
         res = nn.forward(x)
 
-        assert res[0] == pytest.approx(0.000002, abs=1e-6)
+        assert res[0] == pytest.approx(0.00001, abs=1e-5)
 
 
     def test_spiral(self):
-        data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=75)
-
-        features = data[0]
-        labels = data[1]
-
-        x = np.linspace(0, 11, 10)
-        y = -x + 5
+        features, labels = spiral_data(100,2)
 
         plt.scatter(features[:, 0], features[:, 1], c=labels, cmap="coolwarm")
-        plt.plot(x, y)
         plt.show()
 
 

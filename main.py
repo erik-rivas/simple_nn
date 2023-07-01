@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
 from sklearn.datasets import make_blobs
+from libs.helpers import spiral_data
 from neural_network.activation_functions.sigmoid import Activation_Sigmoid
 from neural_network.layers.layer_dense import Layer_Dense
 from neural_network.neural_network import NeuralNetwork
@@ -26,20 +27,11 @@ def test_train(features, labels):
 
 
 if __name__ == "__main__":
-    features = [
-        [8, 10],
-        [2, -10],
-    ]
-    labels = [
-        [1.0],
-        [0.0],
-    ]
     data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=75)
-
     features = data[0]
     labels = data[1]
 
-    res = test_train(features, labels)
+    y_predicted = test_train(features, labels)
 
     x = np.linspace(0, 11, 10)
     y = -x + 5
@@ -52,8 +44,14 @@ if __name__ == "__main__":
     ax1.set_ylabel('Y True')
 
     ax2.plot(x, y)
-    ax2.scatter(features[:, 0], features[:, 1], c=res, cmap="PiYG")
-    ax2.set_ylabel('Y True')
+    ax2.scatter(features[:, 0], features[:, 1], c=y_predicted, cmap="PiYG")
+    ax2.set_ylabel('Y Predicted')
 
     plt.show()
+
+
+    # features, labels = spiral_data(100,2)
+
+    # plt.scatter(features[:, 0], features[:, 1], c=labels, cmap="coolwarm")
+    # plt.show()
 
