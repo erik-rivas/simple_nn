@@ -2,8 +2,12 @@ matplotlib
 numpy
 pyqt5
 scikit-learn
-torch 
-torchvision 
+torch
+torchvision
 torchaudio
 jupyterlab
 pytest
+nptyping[complete]
+beartype
+isort
+pre-commit
