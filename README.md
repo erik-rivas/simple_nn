@@ -14,11 +14,12 @@ python main.py
 TODO
 ----------------
 
-- Add numpy typing
+- Solve the chapter "30. A Neural Network part Two" using simple NN.
 - Create the spiral plot and use the previous NN layers to solve it.
-- Solve the chapter "28. Variables and Place holders" using simple NN.
 
 DONE
 -------------------------
 
 - Simple linear classifier using simple NN.
+- Add pre-commit hooks
+- Add numpy typing

@@ -1,14 +1,15 @@
 import numpy as np
+from numpy.typing import NDArray
 
 from neural_network.layers.layer_base import Layer
 
 
 class Layer_Dense(Layer):
-    def __init__(self, n_inputs, n_neurons):
+    def __init__(self, n_inputs: int, n_neurons: int):
         self.weights = 0.01 * np.random.randn(n_inputs, n_neurons)
         self.biases = np.zeros((1, n_neurons))
 
-    def set_weights_biases(self, weights, biases):
+    def set_weights_biases(self, weights: NDArray, biases: NDArray):
         self.weights = weights
         self.biases = biases
 
