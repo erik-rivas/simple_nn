@@ -1,5 +1,5 @@
-from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib import pyplot as plt
 
 from neural_network.activation_functions import Activation
 
@@ -43,9 +43,7 @@ if __name__ == "__main__":
     ax1 = plt.subplot(211)
     ax1.plot(x, y)
 
-
     ax2 = plt.subplot(212, sharex=ax1)
     ax1.plot(x, dy_dx)
-
 
     plt.show()

@@ -1,10 +1,17 @@
-from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib import pyplot as plt
 from sklearn.datasets import make_blobs
+
 from libs.helpers import spiral_data
-from neural_network.activation_functions import Activation_ReLU, Activation_Sigmoid, Activation_Softmax
+from neural_network.activation_functions import (
+    Activation_ReLU,
+    Activation_Sigmoid,
+    Activation_Softmax,
+)
 from neural_network.layers.layer_dense import Layer_Dense
-from neural_network.loss_functions.layer_crossentropy import Loss_CategoricalCrossentropy_Loss
+from neural_network.loss_functions.layer_crossentropy import (
+    Loss_CategoricalCrossentropy_Loss,
+)
 from neural_network.neural_network import NeuralNetwork
 
 
@@ -50,8 +57,7 @@ if __name__ == "__main__":
 
     # plt.show()
 
-
-    features, labels = spiral_data(100,2)
+    features, labels = spiral_data(100, 2)
 
     plt.scatter(features[:, 0], features[:, 1], c=labels, cmap="coolwarm")
     # plt.show()

@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Loss_CategoricalCrossentropy_Loss:
     def calculate(self, output, y):
         # Number of samples in a batch
@@ -16,7 +17,7 @@ class Loss_CategoricalCrossentropy_Loss:
             correct_confidences = y_pred_clipped[range(samples), y_true]
 
         elif len(y_true.shape) == 2:
-            correct_confidences = np.sum(y_pred_clipped*y_true, axis=1)
+            correct_confidences = np.sum(y_pred_clipped * y_true, axis=1)
 
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods

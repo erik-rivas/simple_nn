@@ -22,7 +22,6 @@ class NeuralNetwork:
             print(f"Forwarding layer: {layer}")
             X = layer.forward(X)
 
-
         return layer.output
 
     def backward(self, y_pred, y_true):
