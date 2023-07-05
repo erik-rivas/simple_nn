@@ -34,7 +34,7 @@ class TestNeuralNetwork:
 
         layers = [dense, Activation_Sigmoid()]
 
-        nn = NeuralNetwork(learning_rate=0.1, layers=layers)
+        nn = NeuralNetwork(layers=layers)
 
         x = np.array([8, 10])
         res = nn.forward(x)
@@ -64,9 +64,11 @@ class TestNeuralNetwork:
 
         layers = [dense, Activation_Sigmoid()]
 
-        nn = NeuralNetwork(learning_rate=0.1, layers=layers)
+        nn = NeuralNetwork(layers=layers)
 
-        nn.train(X=features, y_true=labels, epochs=1000, print_every=100)
+        nn.train(
+            X=features, y_true=labels, learning_rate=0.01, epochs=1000, print_every=100
+        )
 
         x = np.array([8, 10])
         res = nn.forward(x)

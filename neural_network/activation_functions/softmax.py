@@ -10,6 +10,8 @@ class Activation_Softmax(Activation):
         self.output = probabilities
         self.inputs = inputs
 
+        return self.output
+
     def backward(self, dvalues):
         self.dinputs = np.empty_like(dvalues)
         for index, (single_output, single_dvalues) in enumerate(
@@ -20,3 +22,6 @@ class Activation_Softmax(Activation):
                 single_output, single_output.T
             )
             self.dinputs[index] = np.dot(jacobian_matrix, single_dvalues)
+
+    def __str__(self) -> str:
+        return f"Activation Softmax"

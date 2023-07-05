@@ -20,6 +20,7 @@ class Loss_CategoricalCrossentropy_Loss:
             correct_confidences = np.sum(y_pred_clipped * y_true, axis=1)
 
         negative_log_likelihoods = -np.log(correct_confidences)
+
         return negative_log_likelihoods
 
     def backward(self, dvalues, y_true):
@@ -31,3 +32,6 @@ class Loss_CategoricalCrossentropy_Loss:
 
         self.dinputs = -y_true / dvalues
         self.dinputs = self.dinputs / samples
+
+    def __str__(self) -> str:
+        return f"Loss CategoricalCrossentropy"

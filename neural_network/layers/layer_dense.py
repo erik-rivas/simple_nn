@@ -30,4 +30,7 @@ class Layer_Dense(Layer):
         self.biases -= lr * self.biases_gradients
 
     def __str__(self) -> str:
-        return f"{self.weights.flatten()}, {self.biases.flatten()}"
+        if sum(self.weights.shape) > 5 or sum(self.biases.shape) > 3:
+            return f"Dense Layer: shape {self.weights.shape}"
+
+        return f"Dense Layer: {self.weights.flatten()}, {self.biases.flatten()}"
