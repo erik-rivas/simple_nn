@@ -28,7 +28,7 @@ class TestNeuralNetwork:
         plt.plot(x, y)
         # plt.show()
 
-        dense = Layer_Dense(n_inputs=2, n_neurons=1)
+        dense = Layer_Dense(n_features=2, n_neurons=1)
         dense.set_weights_biases(weights=np.array([[1], [1]]), biases=np.array([-5]))
         # dense.set_weights_biases(5, 5)
 
@@ -59,7 +59,7 @@ class TestNeuralNetwork:
         plt.plot(x, y)
         # plt.show()
 
-        dense = Layer_Dense(n_inputs=2, n_neurons=1)
+        dense = Layer_Dense(n_features=2, n_neurons=1)
         # dense.set_weights_biases(weights=np.array([[1], [1]]), biases=np.array([-5]))
 
         layers = [dense, Activation_Sigmoid()]

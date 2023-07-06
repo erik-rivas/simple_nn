@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.datasets import make_blobs
 
+from examples import tf_31, tf_32
 from libs.helpers import spiral_data
 from neural_network.activation_functions import (
     Activation_ReLU,
@@ -21,7 +22,7 @@ def test_simple_regression():
     print(y_true)
 
     layers = [
-        Layer_Dense(n_inputs=1, n_neurons=1),
+        Layer_Dense(n_features=1, n_neurons=1),
         # Activation_Sigmoid(),
     ]
 
@@ -43,7 +44,7 @@ def test_linnear_classifier():
     features = data[0]
     labels = data[1].reshape(-1, 1)
 
-    dense = Layer_Dense(n_inputs=2, n_neurons=1)
+    dense = Layer_Dense(n_features=2, n_neurons=1)
     layers = [
         dense,
         Activation_Sigmoid(),
@@ -92,7 +93,9 @@ def test_spiral():
     ]
 
     nn = NeuralNetwork(layers=layers)
-    nn.train(X=features, y_true=labels, learning_rate=0.01, epochs=1000, print_every=100)
+    nn.train(
+        X=features, y_true=labels, learning_rate=0.01, epochs=1000, print_every=100
+    )
     res = nn.forward(features)
 
 
@@ -100,3 +103,6 @@ if __name__ == "__main__":
     test_simple_regression()
     test_linnear_classifier()
     # test_spiral()
+
+    tf_31.run()
+    tf_32.run()

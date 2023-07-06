@@ -16,7 +16,7 @@ class NeuralNetwork:
 
     def forward(self, X):
         for layer in self.layers:
-            print(layer)
+            # print(layer)
             X = layer.forward(X)
 
         return layer.output
