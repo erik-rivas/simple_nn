@@ -2,10 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from neural_network.activation_functions.sigmoid import Activation_Sigmoid
 from neural_network.estimators.linear_regressor import LinearRegressor
-from neural_network.layers.layer_dense import Layer_Dense
-from neural_network.neural_network import NeuralNetwork
 
 
 def run():
