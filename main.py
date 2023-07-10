@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.datasets import make_blobs
 
-from examples import tf_31, tf_32
+from examples import tf_31, tf_32, tf_33
 from libs.helpers import spiral_data
 from neural_network.activation_functions import (
     Activation_ReLU,
@@ -100,9 +100,10 @@ def test_spiral():
 
 
 if __name__ == "__main__":
-    test_simple_regression()
-    test_linnear_classifier()
-    # test_spiral()
+    # test_simple_regression()
+    # test_linnear_classifier()
+    # # test_spiral()
 
-    tf_31.run()
-    tf_32.run()
+    # tf_31.run()
+    # tf_32.run()
+    tf_33.run()

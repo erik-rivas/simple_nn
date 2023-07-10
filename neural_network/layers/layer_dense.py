@@ -5,7 +5,9 @@ from neural_network.layers.layer_base import Layer
 
 
 class Layer_Dense(Layer):
-    def __init__(self, n_features: int, n_neurons: int):
+    def __init__(self, n_features: int, n_neurons: int, random_state=None):
+        if random_state:
+            np.random.seed(random_state)
         self.weights = 0.01 * np.random.randn(n_features, n_neurons)
         self.biases = np.zeros((1, n_neurons))
 
@@ -19,7 +21,7 @@ class Layer_Dense(Layer):
 
         return self.output
 
-    def backward(self, gradients: np.ndarray):
+    def backward(self, gradients: NDArray):
         self.weights_gradients = np.dot(self.inputs.T, gradients).reshape(
             self.weights.shape
         )
