@@ -9,6 +9,7 @@ class NeuralNetwork:
     layers = None
 
     def __init__(self, layers, loss_fn=None):
+        """Initialize the NeuralNetwork with layers, loss function and learning rate."""
         self.layers = layers
         self.loss_fn = loss_fn
 
@@ -18,6 +19,7 @@ class NeuralNetwork:
         self.accuracy = Accuracy()
 
     def forward(self, X) -> NDArray:
+        """Forward propagation through the network."""
         for layer in self.layers:
             # print(layer)
             X = layer.forward(X)
@@ -25,16 +27,19 @@ class NeuralNetwork:
         return layer.output
 
     def backward(self, y_pred, y_true):
+        """Backward propagation through the network."""
         loss_derivative = self.loss_fn.backward(y_pred, y_true)
         for layer in reversed(self.layers):
             loss_derivative = layer.backward(loss_derivative)
         return loss_derivative
 
     def update(self):
+        """Update weights in the network."""
         for layer in self.layers:
             layer.update(self.learning_rate)
 
     def train(self, X, y_true, learning_rate=0.001, epochs=1000, print_every=100):
+        """Train the neural network with given input and target output."""
         self.learning_rate = learning_rate
 
         losses = []
