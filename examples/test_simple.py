@@ -90,7 +90,7 @@ def test_spiral():
     ]
 
     nn = NeuralNetwork(layers=layers)
-    nn.train(
-        X=features, y_true=labels, learning_rate=0.01, epochs=1000, print_every=100
-    )
-    res = nn.forward(features)
+    # nn.train(
+    #     X=features, y_true=labels, learning_rate=0.01, epochs=1000, print_every=100
+    # )
+    # res = nn.forward(features)

@@ -50,7 +50,7 @@ class TestNeuralNetwork:
         data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=75)
 
         features = data[0]
-        labels = data[1]
+        labels = data[1].reshape(-1, 1)
 
         x = np.linspace(0, 11, 10)
         y = -x + 5
@@ -66,19 +66,19 @@ class TestNeuralNetwork:
 
         nn = NeuralNetwork(layers=layers)
 
-        # nn.train(
-        #     X=features, y_true=labels, learning_rate=0.01, epochs=1000, print_every=100
-        # )
+        nn.train(
+            X=features, y_true=labels, learning_rate=0.01, epochs=1000, print_every=100
+        )
 
-        # x = np.array([8, 10])
-        # res = nn.forward(x)
+        x = np.array([8, 10])
+        res = nn.forward(x)
 
-        # assert res[0] == pytest.approx(0.9999, abs=1e-4)
+        assert res[0] == pytest.approx(0.9999, abs=1e-4)
 
-        # x = np.array([2, -10])
-        # res = nn.forward(x)
+        x = np.array([2, -10])
+        res = nn.forward(x)
 
-        # assert res[0] == pytest.approx(0.00001, abs=1e-5)
+        assert res[0] == pytest.approx(0.0001, abs=1e-3)
 
     def test_spiral(self):
         features, labels = spiral_data(100, 2)

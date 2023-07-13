@@ -8,7 +8,7 @@ from examples.test_simple import (
 if __name__ == "__main__":
     # test_simple_regression()
     # test_linnear_classifier()
-    # # test_spiral()
+    # test_spiral()
 
     # tf_31.run()
     # tf_32.run()

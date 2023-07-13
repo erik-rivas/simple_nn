@@ -15,4 +15,4 @@ def run():
     batch = 100
     iterations = 3000
 
-    epochs = iterations // (total_data // batch)
+    epochs = 5
