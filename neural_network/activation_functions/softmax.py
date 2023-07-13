@@ -1,9 +1,9 @@
 import numpy as np
 
-from neural_network.activation_functions import Activation
+from neural_network.activation_functions.activation import Activation
 
 
-class Activation_Softmax(Activation):
+class Activation_SoftMax(Activation):
     def forward(self, inputs):
         exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
         probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)

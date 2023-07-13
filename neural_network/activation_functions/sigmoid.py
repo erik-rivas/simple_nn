@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from neural_network.activation_functions import Activation
+from neural_network.activation_functions.activation import Activation
 
 
 def sigmoid(x):

@@ -6,12 +6,10 @@ from libs.helpers import spiral_data
 from neural_network.activation_functions import (
     Activation_ReLU,
     Activation_Sigmoid,
-    Activation_Softmax,
+    Activation_SoftMax,
 )
 from neural_network.layers.layer_dense import Layer_Dense
-from neural_network.loss_functions.layer_crossentropy import (
-    Loss_CategoricalCrossentropy_Loss,
-)
+from neural_network.loss_functions import CategoricalCrossEntropy
 from neural_network.neural_network import NeuralNetwork
 
 
@@ -87,8 +85,8 @@ def test_spiral():
         Layer_Dense(2, 64),
         Activation_ReLU(),
         Layer_Dense(64, 3),
-        Activation_Softmax(),
-        Loss_CategoricalCrossentropy_Loss(),
+        Activation_SoftMax(),
+        CategoricalCrossEntropy(),
     ]
 
     nn = NeuralNetwork(layers=layers)

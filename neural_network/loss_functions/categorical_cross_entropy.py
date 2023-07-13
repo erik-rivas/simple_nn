@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Loss_CategoricalCrossentropy_Loss:
+class CategoricalCrossEntropy:
     def calculate(self, output, y):
         # Number of samples in a batch
         sample_losses = self.forward(output, y)
