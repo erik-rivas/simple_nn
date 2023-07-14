@@ -60,14 +60,13 @@ class TestNeuralNetwork:
         # plt.show()
 
         dense = Layer_Dense(n_features=2, n_neurons=1)
-        # dense.set_weights_biases(weights=np.array([[1], [1]]), biases=np.array([-5]))
 
         layers = [dense, Activation_Sigmoid()]
 
         nn = NeuralNetwork(layers=layers)
 
         nn.train(
-            X=features, y_true=labels, learning_rate=0.01, epochs=1000, print_every=100
+            X=features, y_true=labels, learning_rate=0.01, epochs=1000, verbose=100
         )
 
         x = np.array([8, 10])

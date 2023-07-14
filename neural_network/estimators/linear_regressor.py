@@ -23,7 +23,7 @@ class LinearRegressor(NeuralNetwork):
                 y_true=y_sample,
                 learning_rate=0.01,
                 epochs=epochs,
-                print_every=1000,
+                verbose=1000,
             )
 
         return self.dense.weights, self.dense.biases

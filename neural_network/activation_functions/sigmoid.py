@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from neural_network.activation_functions.activation import Activation
+from neural_network.activation_functions.activation import ActivationFunction
 
 
 def sigmoid(x):
@@ -18,7 +18,7 @@ def sigmoid_derivative(z_sigmoid):
     # return np.exp(-z) / den
 
 
-class Activation_Sigmoid(Activation):
+class Activation_Sigmoid(ActivationFunction):
     def forward(self, inputs):
         self.output = sigmoid(inputs)
         self.inputs = inputs

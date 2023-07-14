@@ -41,7 +41,7 @@ class LinearClassifier(NeuralNetwork):
                 y_true=y_sample,
                 learning_rate=0.001,
                 epochs=epochs,
-                print_every=100,
+                verbose=100,
             )
             losses.append(loss)
 

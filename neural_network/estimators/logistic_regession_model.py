@@ -25,7 +25,16 @@ class LogisticRegresionModel(NeuralNetwork):
 
         super().__init__(layers, loss_fn)
 
-    def train(self, x_data, y_data, n_baches=None, bach_size=8, epochs=128):
+    def train(
+        self,
+        x_data,
+        y_data,
+        n_baches=None,
+        bach_size=8,
+        epochs=128,
+        learning_rate=0.001,
+        verbose=100,
+    ):
         losses = []
 
         if not n_baches:
@@ -33,14 +42,14 @@ class LogisticRegresionModel(NeuralNetwork):
 
         for _ in range(n_baches):
             rand_ind = np.random.randint(len(x_data), size=bach_size)
-            x_sample = x_data[rand_ind].reshape((-1, self.n_features))
+            x_sample = x_data[rand_ind].reshape((-1, x_data.shape[1]))
             y_sample = y_data[rand_ind].reshape(-1, 1)
             loss = super().train(
                 X=x_sample,
                 y_true=y_sample,
-                learning_rate=0.001,
+                learning_rate=learning_rate,
                 epochs=epochs,
-                print_every=100,
+                verbose=print_every,
             )
             losses.append(loss)
 

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Activation(ABC):
+class ActivationFunction(ABC):
     @abstractmethod
     def forward(self, inputs):
         pass

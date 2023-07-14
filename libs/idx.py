@@ -75,7 +75,7 @@ def read_idx(path: str, items_to_read: int = None):
             items_to_read = items_to_read or n_flat
             arr = np.fromfile(file, dtype=dtype, count=items_to_read)
 
-    return arr, shape
+    return np.array(arr), shape
 
 
 if __name__ == "__main__":

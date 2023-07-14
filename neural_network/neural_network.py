@@ -1,4 +1,5 @@
 import numpy as np
+from matplotlib import pyplot as plt
 from numpy.typing import NDArray
 
 from neural_network.accuracy.accuracy import Accuracy
@@ -16,12 +17,13 @@ class NeuralNetwork:
         # Set default optimizers and loss_fn
         if not loss_fn:
             self.loss_fn = Loss_MeanSquaredError()
+
         self.accuracy = Accuracy()
 
     def forward(self, X) -> NDArray:
         """Forward propagation through the network."""
         for layer in self.layers:
-            # print(layer)
+            print(layer)
             X = layer.forward(X)
 
         return layer.output
@@ -38,23 +40,68 @@ class NeuralNetwork:
         for layer in self.layers:
             layer.update(self.learning_rate)
 
-    def train(self, X, y_true, learning_rate=0.001, epochs=1000, print_every=100):
+    def train(
+        self,
+        X,
+        y_true,
+        learning_rate=0.001,
+        batch_size=128,
+        epochs=1000,
+        verbose=100,
+    ):
         """Train the neural network with given input and target output."""
-        self.learning_rate = learning_rate
+        self.X_train = X
+        self.y_train = y_true
 
-        losses = []
+        # Set learning rate, batch size and epochs
+        self.learning_rate = learning_rate
+        self.batch_size = batch_size
+        self.epochs = epochs
+
+        self.history = {
+            "loss": [],
+            "accuracy": [],
+        }
 
         for epoch in range(epochs):
-            y_pred = self.forward(X)
-            loss = self.loss_fn.calculate(y_pred, y_true)
-            losses.append(loss)
-            # accuracy = self.accuracy.calculate(y_pred, y)
-            # accuracy = 0.001
+            for i in range(0, len(self.X_train), batch_size):
+                batch_X = self.X_train[i : i + batch_size]
+                batch_y = self.y_train[i : i + batch_size]
 
-            self.backward(y_pred, y_true)
-            self.update()
+                y_pred = self.forward(batch_X)
+                loss = self.loss_fn.calculate(y_pred, batch_y)
+                accuracy, precision, recall, f1_score = self.accuracy.calculate(
+                    y_pred, batch_y
+                )
 
-            if epoch % print_every == 0:
-                print(f"epoch: {epoch}, loss: {loss}")
+                self.backward(y_pred, y_true)
+                self.update()
 
-        return np.mean(losses)
+                self.history["loss"].append(loss)
+                self.history["accuracy"].append(accuracy)
+
+            if verbose and epoch % verbose == 0:
+                print(
+                    f"epoch: {epoch}, "
+                    + f"loss: {loss:.3f}, "
+                    + f"accuracy: {accuracy:.3f}"
+                    + f"precision: {precision:.3f}"
+                    + f"recall: {recall:.3f}"
+                    + f"f1_score: {f1_score:.3f}"
+                )
+
+    def evaluate(self, X, y_true):
+        """Evaluate the model with given input and target output."""
+        y_pred = self.forward(X)
+        loss = self.loss_fn.calculate(y_pred, y_true)
+        # accuracy = self.accuracy.calculate(y_pred, y_true)
+        return loss
+
+    def predict(self, X):
+        """Predict the output with given input."""
+        return self.forward(X)
+
+    def plot_history(self):
+        """Plot the history of loss and accuracy."""
+        plt.plot(self.losses)
+        plt.show()
