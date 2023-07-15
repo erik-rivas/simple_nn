@@ -31,9 +31,6 @@ class Activation_Sigmoid(ActivationFunction):
 
         return self.doutput
 
-    def update(self, learning_rate=None):
-        pass
-
 
 if __name__ == "__main__":
     x = np.linspace(-10, 10, 100)

@@ -9,10 +9,11 @@ from neural_network.loss_functions.mean_squared_error import Loss_MeanSquaredErr
 class NeuralNetwork:
     layers = None
 
-    def __init__(self, layers, loss_fn=None):
+    def __init__(self, layers, loss_fn=None, debug_verbose=False):
         """Initialize the NeuralNetwork with layers, loss function and learning rate."""
         self.layers = layers
         self.loss_fn = loss_fn
+        self.debug_verbose = debug_verbose
 
         # Set default optimizers and loss_fn
         if not loss_fn:
@@ -23,8 +24,9 @@ class NeuralNetwork:
     def forward(self, X) -> NDArray:
         """Forward propagation through the network."""
         for layer in self.layers:
-            print(layer)
             X = layer.forward(X)
+            if self.debug_verbose:
+                print(layer)
 
         return layer.output
 
@@ -84,9 +86,9 @@ class NeuralNetwork:
                 print(
                     f"epoch: {epoch}, "
                     + f"loss: {loss:.3f}, "
-                    + f"accuracy: {accuracy:.3f}"
-                    + f"precision: {precision:.3f}"
-                    + f"recall: {recall:.3f}"
+                    + f"accuracy: {accuracy:.3f}, "
+                    + f"precision: {precision:.3f}, "
+                    + f"recall: {recall:.3f}, "
                     + f"f1_score: {f1_score:.3f}"
                 )
 

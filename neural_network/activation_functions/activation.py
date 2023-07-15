@@ -9,3 +9,6 @@ class ActivationFunction(ABC):
     @abstractmethod
     def backward(self, dvalues):
         pass
+
+    def update(self, learning_rate=None):
+        pass

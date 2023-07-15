@@ -12,5 +12,7 @@ class Activation_ReLU:
         self.dinputs = dvalues.copy()
         self.dinputs[self.inputs <= 0] = 0
 
+        return self.dinputs
+
     def __str__(self) -> str:
         return f"Activation ReLU"

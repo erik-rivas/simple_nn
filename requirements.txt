@@ -1,4 +1,5 @@
 black
+colorama
 matplotlib
 numpy
 pyqt5

@@ -45,6 +45,9 @@ class Layer_Dense(Layer):
             self.weights.shape
         )
         self.biases_gradients = np.sum(gradients, axis=0, keepdims=True)
+        self.dinputs = np.dot(gradients, self.weights.T)
+
+        return self.dinputs
 
     def update(self, lr):
         self.weights -= lr * self.weights_gradients

@@ -9,7 +9,7 @@ class Activation_SoftMax(ActivationFunction):
     """
 
     def forward(self, raw_inputs):
-        exponents = sum(np.exp(raw_inputs))
+        exponents = np.sum(np.exp(raw_inputs), axis=1, keepdims=True)
         probabilities = np.round(np.exp(raw_inputs) / exponents, 3)
 
         self.output = probabilities
@@ -28,6 +28,8 @@ class Activation_SoftMax(ActivationFunction):
                 single_output, single_output.T
             )
             self.dinputs[index] = np.dot(jacobian_matrix, single_gradient)
+
+        return self.dinputs
 
     def __repr__(self) -> str:
         return f"Activation Softmax"

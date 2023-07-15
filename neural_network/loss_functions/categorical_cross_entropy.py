@@ -8,14 +8,14 @@ class CategoricalCrossEntropy(LossFunction):
     Categorical cross-entropy loss.
     """
 
-    epsilon: float = 1e-2
+    epsilon: float = 1e-6
 
     def calculate(self, y_pred, y_true):
         """
         Calculate categorical cross-entropy loss for all the samples.
         """
         sample_losses = self.forward(y_pred, y_true)
-        data_loss = np.mean(sample_losses)
+        data_loss = np.sum(sample_losses) / len(sample_losses)
 
         return data_loss
 
@@ -27,7 +27,7 @@ class CategoricalCrossEntropy(LossFunction):
         """
 
         # Clipping predictions to prevent log of zero
-        y_pred_clipped = np.clip(y_pred, self.epsilon, 1 - self.epsilon)
+        y_pred_clipped = np.clip(y_pred, self.epsilon, 1)
 
         # Compute loss
         cross_entropy = -(y_true * np.log(y_pred_clipped))
