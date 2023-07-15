@@ -39,13 +39,15 @@ class CategoricalCrossEntropy(LossFunction):
         y_pred is output from the softmax layer
         y_true is one-hot encoded
         """
-        samples = len(y_pred)
-        labels = len(y_pred[0])
+        y_pred_clipped = np.clip(y_pred, self.epsilon, 1)
+
+        samples = len(y_pred_clipped)
+        labels = len(y_pred_clipped[0])
 
         if len(y_true.shape) == 1:
             y_true = np.eye(labels)[y_true]
 
-        self.dinputs = -y_true / y_pred
+        self.dinputs = -y_true / y_pred_clipped
         self.dinputs = self.dinputs / samples
 
         return self.dinputs

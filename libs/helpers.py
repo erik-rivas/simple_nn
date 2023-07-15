@@ -88,12 +88,7 @@ def generate_data(n_classes=2, n_features=2, n_samples=20):
     X = data[0]
     y = data[1]
 
-    # Split into training and test sets
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=1
-    )
-
-    return X_train, X_test, y_train, y_test
+    return X, y
 
 
 if __name__ == "__main__":

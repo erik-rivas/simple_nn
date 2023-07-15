@@ -15,11 +15,11 @@ class SimpleClassificationModel(NeuralNetwork):
         self.n_classes = n_classes
 
         self.layers = [
+            # Layer_Dense(
+            #     n_features=n_features, n_neurons=n_features, activation_fn="relu"
+            # ),
             Layer_Dense(
-                n_features=n_features, n_neurons=n_hidden, activation_fn="relu"
-            ),
-            Layer_Dense(
-                n_features=n_hidden, n_neurons=n_classes, activation_fn="softmax"
+                n_features=n_features, n_neurons=n_classes, activation_fn="softmax"
             ),
         ]
         self.loss_fn = CategoricalCrossEntropy()

@@ -105,5 +105,5 @@ class NeuralNetwork:
 
     def plot_history(self):
         """Plot the history of loss and accuracy."""
-        plt.plot(self.losses)
+        plt.plot(self.history["loss"])
         plt.show()
