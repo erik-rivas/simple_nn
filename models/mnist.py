@@ -14,8 +14,8 @@ class MnistModel(NeuralNetwork):
         self.n_classes = 10
 
         self.layers = [
-            Layer_Dense(n_features=self.n_features, n_neurons=64, activation="sigmoid"),
-            Layer_Dense(n_features=64, n_neurons=10, activation="softmax"),
+            Layer_Dense(n_features=self.n_features, n_neurons=64, activation_fn="relu"),
+            Layer_Dense(n_features=64, n_neurons=10, activation_fn="softmax"),
         ]
         self.loss_fn = CategoricalCrossEntropy()
 
@@ -34,7 +34,11 @@ class MnistModel(NeuralNetwork):
 
         return self.X_train, self.y_train
 
-    # generate train function
+    def plot_dataset_sample(self, index):
+        plt.imshow(self.X_train[index].reshape((28, 28)), cmap="gray")
+        plt.title(self.y_train[index])
+        plt.show()
+
     def train(self, epochs=1000, batch_size=128, learning_rate=0.01, verbose=1):
         self.learning_rate = learning_rate
         self.batch_size = batch_size

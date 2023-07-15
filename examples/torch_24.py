@@ -2,31 +2,26 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from libs.idx import read_idx
-from libs.mnist import get_mnist, plot_image
+from models.mnist import MnistModel
 from neural_network.estimators.logistic_regession_model import LogisticRegresionModel
 
 
 def run():
-    imgs, labels, rows, cols = get_mnist(items_to_read=10)
-    # img = np.array(imgs[1]).reshape((rows, cols))
-    # plot_image(img)
+    model = MnistModel()
 
-    nn = LogisticRegresionModel(n_features=cols * rows)
+    model.plot_dataset_sample(index=0)
 
-    nn.train(
-        x_data=imgs,
-        y_data=labels,
-        bach_size=8,
-        learning_rate=0.01,
-        epochs=1000,
-    )
+    model.train(epochs=10, batch_size=128, learning_rate=0.01, verbose=1)
+    model.evaluate()
+    model.predict()
+    model.plot_history()
 
-    # x_pred = np.linspace(0, 10, 11).reshape((-1, 1))
-    # y_pred = nn.forward(x_pred)
-
-    # plt.plot(x, y_true, c="blue")
-    # plt.plot(x_pred, y_pred, "o", c="red")
-
-    # plt.show()
-
-    print("done!")
+    # model.plot_confusion_matrix()
+    # model.plot_errors()
+    # model.plot_weights()
+    # model.plot_activations()
+    # model.plot_gradients()
+    # model.plot_weights_gradients()
+    # model.plot_weights_gradients_3d()
+    # model.plot_weights_gradients_3d_surface()
+    # model.plot_weights_gradients_3d_contour()
