@@ -30,10 +30,9 @@ class CategoricalCrossEntropy(LossFunction):
         y_pred_clipped = np.clip(y_pred, self.epsilon, 1 - self.epsilon)
 
         # Compute loss
-        loss = -np.sum(y_true * np.log(y_pred_clipped))
-        loss /= y_true.shape[0]
+        cross_entropy = -(y_true * np.log(y_pred_clipped))
 
-        return loss
+        return cross_entropy
 
     def backward(self, y_pred, y_true):
         """

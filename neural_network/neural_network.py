@@ -74,7 +74,7 @@ class NeuralNetwork:
                     y_pred, batch_y
                 )
 
-                self.backward(y_pred, y_true)
+                self.backward(y_pred, batch_y)
                 self.update()
 
                 self.history["loss"].append(loss)
