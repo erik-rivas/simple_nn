@@ -82,15 +82,15 @@ class NeuralNetwork:
                 self.history["loss"].append(loss)
                 self.history["accuracy"].append(accuracy)
 
-            if verbose and epoch % verbose == 0:
-                print(
-                    f"epoch: {epoch}, "
-                    + f"loss: {loss:.3f}, "
-                    + f"accuracy: {accuracy:.3f}, "
-                    + f"precision: {precision:.3f}, "
-                    + f"recall: {recall:.3f}, "
-                    + f"f1_score: {f1_score:.3f}"
-                )
+                if verbose and i % verbose == 0:
+                    print(
+                        f"epoch: {epoch}, batch: {i},"
+                        + f"loss: {loss:.3f}, "
+                        + f"accuracy: {accuracy:.3f}, "
+                        + f"precision: {precision:.3f}, "
+                        + f"recall: {recall:.3f}, "
+                        + f"f1_score: {f1_score:.3f}"
+                    )
 
     def evaluate(self, X, y_true):
         """Evaluate the model with given input and target output."""

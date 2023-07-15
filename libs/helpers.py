@@ -1,5 +1,8 @@
 # Let's first create the data
 import numpy as np
+import pandas as pd
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import OneHotEncoder
 
 
 def spiral_data(samples=100, classes=3):
@@ -62,11 +65,35 @@ def train_test_split(*arrays, test_size=0.25, random_state=None, shuffle=True):
     list_result = list()
 
     for arr in arrays:
-        list_result.append(arr.iloc[train_indices])
-        list_result.append(arr.iloc[test_indices])
+        if type(arr) == np.ndarray:
+            list_result.append(arr[train_indices])
+            list_result.append(arr[test_indices])
+        elif type(arr) == pd.DataFrame:
+            list_result.append(arr.iloc[train_indices])
+            list_result.append(arr.iloc[test_indices])
 
     split_arrays = tuple(list_result)
     return split_arrays
+
+
+def generate_data(n_classes=2, n_features=2, n_samples=20):
+    # Generate a binary classification dataset
+
+    data = make_blobs(
+        n_samples=n_samples,
+        n_features=n_features,
+        centers=n_classes,
+        random_state=101,
+    )
+    X = data[0]
+    y = data[1]
+
+    # Split into training and test sets
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=1
+    )
+
+    return X_train, X_test, y_train, y_test
 
 
 if __name__ == "__main__":
