@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 from matplotlib import pyplot as plt
 from numpy.typing import NDArray
@@ -72,6 +74,9 @@ class NeuralNetwork:
 
                 y_pred = self.forward(batch_X)
                 loss = self.loss_fn.calculate(y_pred, batch_y)
+                if loss is None or math.isnan(loss):
+                    raise ValueError("Loss is None or NaN")
+
                 accuracy, precision, recall, f1_score = self.accuracy.calculate(
                     y_pred, batch_y
                 )
