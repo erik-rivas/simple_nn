@@ -52,7 +52,28 @@ class MnistSimpleClassifier:
         return network
 
     def plot_results(self):
-        # network.plot_dataset_sample(self.X_train[0], self.y_train[0])
+        # get random images from test data set
+        n_samples = 50
+        sample_indexes = np.random.choice(
+            self.X_test.shape[0], n_samples, replace=False
+        )
+        sample_images = self.X_test[sample_indexes]
+        sample_labels = self.y_test[sample_indexes]
+        # sample_labels_onehot = self.y_test_onehot[sample_indexes]
+
+        # predict for sample images
+        predictions = self.network.predict(sample_images)
+        predicted_labels = np.argmax(predictions, axis=1)
+        # Plot the n_samples images
+        n_cols = 10
+        n_rows = n_samples // n_cols
+        fig, axes = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(12, 12))
+
+        for i in range(n_samples):
+            ax = axes[i // n_cols, i % n_cols]
+            ax.imshow(sample_images[i].reshape(28, 28), cmap="gray")
+            title = f"{sample_labels[i]} :: {predicted_labels[i]}"
+            ax.set(title=title, aspect=1, xticks=[], yticks=[])
 
         # Plotting
         plt.figure(figsize=(10, 7))
@@ -65,7 +86,7 @@ class MnistSimpleClassifier:
     def run(
         self,
         images_to_read=1000,
-        epochs=500,
+        epochs=10,
         batch_size=8,
         learning_rate=0.01,
         verbose=100,
@@ -83,9 +104,9 @@ class MnistSimpleClassifier:
 def run():
     simple_classifier = MnistSimpleClassifier()
     simple_classifier.run(
-        images_to_read=1000,
-        epochs=100,
-        batch_size=32,
-        learning_rate=0.01,
-        verbose=100,
+        images_to_read=None,
+        epochs=10,
+        batch_size=100,
+        learning_rate=0.1,
+        verbose=10000,
     )
