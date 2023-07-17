@@ -38,7 +38,7 @@ class SimpleClassifier:
         self.y_train_onehot = y_train_onehot
         self.y_test_onehot = y_test_onehot
 
-    def generate_network(self):
+    def generate_network(self, epochs=500, batch_size=8, learning_rate=0.01, verbose=1):
         # Create a model
         network = SimpleClassificationModel(
             n_features=self.n_features,
@@ -50,10 +50,10 @@ class SimpleClassifier:
         network.train(
             self.X_train,
             self.y_train_onehot,
-            epochs=10,
-            batch_size=8,
-            learning_rate=0.01,
-            verbose=1,
+            epochs=epochs,
+            batch_size=batch_size,
+            learning_rate=learning_rate,
+            verbose=verbose,
         )
 
         # accuracy, precision, recall, f1_score = network.evaluate(self.X_test, self.y_test_onehot)
@@ -98,14 +98,21 @@ class SimpleClassifier:
 
         plt.show()
 
-    def run(self):
+    def run(self, epochs=500, batch_size=8, learning_rate=0.01, verbose=1):
         self.generate_data()
-        self.generate_network()
+        self.generate_network(
+            epochs=epochs, batch_size=batch_size, learning_rate=learning_rate, verbose=1
+        )
         self.plot_results()
 
 
 def run():
     simple_classifier = SimpleClassifier(
-        n_classes=2, n_features=2, n_samples=50, random_state=75
+        n_classes=10, n_features=2, n_samples=1000, random_state=75
     )
-    simple_classifier.run()
+    simple_classifier.run(
+        epochs=128,
+        batch_size=8,
+        learning_rate=0.01,
+        verbose=100,
+    )

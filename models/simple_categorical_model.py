@@ -22,13 +22,13 @@ class SimpleClassificationModel(NeuralNetwork):
 
     def set_softmax_layers(self):
         self.layers = [
-            # Layer_Dense(
-            #     n_features=self.n_features,
-            #     n_neurons=self.n_features,
-            #     activation_fn=ActivationFunctions.RELU,
-            # ),
             Layer_Dense(
                 n_features=self.n_features,
+                n_neurons=self.n_hidden,
+                activation_fn=ActivationFunctions.RELU,
+            ),
+            Layer_Dense(
+                n_features=self.n_hidden,
                 n_neurons=self.n_classes,
                 activation_fn=ActivationFunctions.SOFTMAX,
             ),
