@@ -11,29 +11,38 @@ from neural_network.neural_network import NeuralNetwork
 
 
 class MnistModel(NeuralNetwork):
-    def setup_layers(self):
+    def setup_layers(self, no_layers=2):
         self.n_features = 784
         self.n_hidden = 128
         self.n_classes = 10
 
-        self.layers = [
-            Layer_Dense(
-                n_features=self.n_features,
-                n_neurons=self.n_hidden,
-                activation_fn=ActivationFunctions.RELU,
-            ),
-            Layer_Dense(
-                n_features=self.n_hidden,
-                n_neurons=self.n_classes,
-                activation_fn=ActivationFunctions.SOFTMAX,
-            ),
-        ]
+        if no_layers == 2:
+            self.layers = [
+                Layer_Dense(
+                    n_features=self.n_features,
+                    n_neurons=self.n_hidden,
+                    activation_fn=ActivationFunctions.RELU,
+                ),
+                Layer_Dense(
+                    n_features=self.n_hidden,
+                    n_neurons=self.n_classes,
+                    activation_fn=ActivationFunctions.SOFTMAX,
+                ),
+            ]
+        elif no_layers == 1:
+            self.layers = [
+                Layer_Dense(
+                    n_features=self.n_features,
+                    n_neurons=self.n_classes,
+                    activation_fn=ActivationFunctions.SOFTMAX,
+                ),
+            ]
         self.loss_fn = CategoricalCrossEntropy()
 
     def __init__(self, random_state=101):
         np.random.seed(random_state)
 
-        self.setup_layers()
+        self.setup_layers(no_layers=1)
 
         super().__init__(self.layers, loss_fn=self.loss_fn)
 

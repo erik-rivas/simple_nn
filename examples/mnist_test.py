@@ -1,12 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from sklearn.datasets import make_blobs, make_classification
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 
-from libs.helpers import generate_data
 from models.mnist import MnistModel
-from models.simple_categorical_model import SimpleClassificationModel
 
 
 class MnistSimpleClassifier:
@@ -27,7 +23,9 @@ class MnistSimpleClassifier:
         self.y_train_onehot = y_train_onehot
         self.y_test_onehot = y_test_onehot
 
-    def generate_network(self, epochs=500, batch_size=8, learning_rate=0.01, verbose=1):
+    def generate_network(
+        self, epochs, batch_size, iter_per_batch, learning_rate, verbose
+    ):
         # Create a model
         network = MnistModel(random_state=1)
         self.network = network
@@ -37,6 +35,7 @@ class MnistSimpleClassifier:
             self.y_train_onehot,
             epochs=epochs,
             batch_size=batch_size,
+            iter_per_batch=iter_per_batch,
             learning_rate=learning_rate,
             verbose=verbose,
         )
@@ -84,17 +83,13 @@ class MnistSimpleClassifier:
         plt.show()
 
     def run(
-        self,
-        images_to_read=1000,
-        epochs=10,
-        batch_size=8,
-        learning_rate=0.01,
-        verbose=100,
+        self, images_to_read, epochs, batch_size, iter_per_batch, learning_rate, verbose
     ):
         self.fetch_data(images_to_read=images_to_read)
         self.generate_network(
             epochs=epochs,
             batch_size=batch_size,
+            iter_per_batch=iter_per_batch,
             learning_rate=learning_rate,
             verbose=verbose,
         )
@@ -106,7 +101,8 @@ def run():
     simple_classifier.run(
         images_to_read=None,
         epochs=10,
-        batch_size=100,
+        batch_size=8,
+        iter_per_batch=2,
         learning_rate=0.1,
         verbose=10000,
     )

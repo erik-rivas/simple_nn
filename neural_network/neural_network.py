@@ -49,8 +49,9 @@ class NeuralNetwork:
         X,
         y_true,
         learning_rate=0.001,
-        batch_size=128,
         epochs=1000,
+        batch_size=128,
+        iter_per_batch=10,
         verbose=100,
     ):
         """Train the neural network with given input and target output."""
@@ -67,35 +68,38 @@ class NeuralNetwork:
             "accuracy": [],
         }
 
+        it = 0
         for epoch in range(epochs):
-            for i in range(0, len(self.X_train), batch_size):
-                batch_X = self.X_train[i : i + batch_size]
-                batch_y = self.y_train[i : i + batch_size]
+            for i_batch in range(0, len(self.X_train), batch_size):
+                batch_X = self.X_train[i_batch : i_batch + batch_size]
+                batch_y = self.y_train[i_batch : i_batch + batch_size]
 
-                y_pred = self.forward(batch_X)
-                loss = self.loss_fn.calculate(y_pred, batch_y)
-                if loss is None or math.isnan(loss):
-                    raise ValueError("Loss is None or NaN")
+                for iteration in range(iter_per_batch):
+                    y_pred = self.forward(batch_X)
+                    loss = self.loss_fn.calculate(y_pred, batch_y)
+                    if loss is None or math.isnan(loss):
+                        raise ValueError("Loss is None or NaN")
 
-                accuracy, precision, recall, f1_score = self.accuracy.calculate(
-                    y_pred, batch_y
-                )
-
-                self.backward(y_pred, batch_y)
-                self.update()
-
-                self.history["loss"].append(loss)
-                self.history["accuracy"].append(accuracy)
-
-                if verbose and i % verbose == 0:
-                    print(
-                        f"epoch: {epoch}, batch: {i},"
-                        + f"loss: {loss:.3f}, "
-                        + f"accuracy: {accuracy:.3f}, "
-                        + f"precision: {precision:.3f}, "
-                        + f"recall: {recall:.3f}, "
-                        + f"f1_score: {f1_score:.3f}"
+                    accuracy, precision, recall, f1_score = self.accuracy.calculate(
+                        y_pred, batch_y
                     )
+
+                    self.backward(y_pred, batch_y)
+                    self.update()
+
+                    self.history["loss"].append(loss)
+                    self.history["accuracy"].append(accuracy)
+
+                    if verbose and it % verbose == 0:
+                        print(
+                            f"epoch: {epoch}, batch: {i_batch}, it: {it}, "
+                            + f"loss: {loss:.3f}, "
+                            + f"accuracy: {accuracy:.3f}, "
+                            + f"precision: {precision:.3f}, "
+                            + f"recall: {recall:.3f}, "
+                            + f"f1_score: {f1_score:.3f}"
+                        )
+                    it += 1
 
     def evaluate(self, X, y_true):
         """Evaluate the model with given input and target output."""
