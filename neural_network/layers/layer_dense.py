@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.typing import NDArray
 
-from neural_network.activation_functions import activation_fn_map
+from neural_network.activation_functions import ActivationFunctions, activation_fn_map
 from neural_network.layers.layer_base import Layer
 
 
@@ -10,8 +10,8 @@ class Layer_Dense(Layer):
         self,
         n_features: int,
         n_neurons: int,
-        random_state=None,
-        activation_fn: str = None,
+        random_state: int = None,
+        activation_fn: ActivationFunctions = None,
     ):
         if random_state:
             np.random.seed(random_state)

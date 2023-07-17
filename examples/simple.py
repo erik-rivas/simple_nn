@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.datasets import make_blobs
 
-from libs.helpers import spiral_data
+from libs.helpers import generate_data, spiral_data
 from neural_network.activation_functions import (
     Activation_ReLU,
     Activation_Sigmoid,
@@ -37,9 +37,9 @@ def test_simple_regression():
 
 
 def test_linnear_classifier():
-    data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=75)
-    features = data[0]
-    labels = data[1].reshape(-1, 1)
+    features, labels = generate_data(
+        n_classes=2, n_features=2, n_samples=50, random_state=75
+    )
 
     dense = Layer_Dense(n_features=2, n_neurons=1)
     layers = [
@@ -54,7 +54,8 @@ def test_linnear_classifier():
 
     nn.train(X=features, y_true=labels, learning_rate=0.01, epochs=1000, verbose=100)
 
-    y_predicted = nn.forward(features)
+    y_pred = nn.forward(features)
+    print(y_pred[:10])
 
     x = np.linspace(0, 11, 10)
     y = -x + 5
@@ -67,7 +68,7 @@ def test_linnear_classifier():
     ax1.set_ylabel("Y True")
 
     ax2.plot(x, y)
-    ax2.scatter(features[:, 0], features[:, 1], c=y_predicted, cmap="PiYG")
+    ax2.scatter(features[:, 0], features[:, 1], c=y_pred, cmap="PiYG")
     ax2.set_ylabel("Y Predicted")
 
     plt.show()

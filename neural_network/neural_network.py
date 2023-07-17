@@ -53,7 +53,7 @@ class NeuralNetwork:
     ):
         """Train the neural network with given input and target output."""
         self.X_train = X
-        self.y_train = y_true
+        self.y_train = y_true if len(y_true.shape) > 1 else y_true.reshape(-1, 1)
 
         # Set learning rate, batch size and epochs
         self.learning_rate = learning_rate
@@ -96,14 +96,17 @@ class NeuralNetwork:
         """Evaluate the model with given input and target output."""
         y_pred = self.forward(X)
         loss = self.loss_fn.calculate(y_pred, y_true)
-        # accuracy = self.accuracy.calculate(y_pred, y_true)
-        return loss
+        accuracy, precision, recall, f1_score = self.accuracy.calculate(y_pred, y_true)
+
+        return accuracy, precision, recall, f1_score
 
     def predict(self, X):
         """Predict the output with given input."""
         return self.forward(X)
 
-    def plot_history(self):
+    def plot_history(self, show=True):
         """Plot the history of loss and accuracy."""
         plt.plot(self.history["loss"])
-        plt.show()
+
+        if show:
+            plt.show()

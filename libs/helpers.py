@@ -76,17 +76,17 @@ def train_test_split(*arrays, test_size=0.25, random_state=None, shuffle=True):
     return split_arrays
 
 
-def generate_data(n_classes=2, n_features=2, n_samples=20):
+def generate_data(n_classes=2, n_features=2, n_samples=20, random_state=101):
     # Generate a binary classification dataset
 
     data = make_blobs(
         n_samples=n_samples,
         n_features=n_features,
         centers=n_classes,
-        random_state=101,
+        random_state=random_state,
     )
     X = data[0]
-    y = data[1]
+    y = data[1].reshape(-1, 1)
 
     return X, y
 
