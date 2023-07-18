@@ -17,6 +17,7 @@ def spiral_data(samples=100, classes=3):
         )
         features[ix] = np.c_[r * np.sin(t * 2.5), r * np.cos(t * 2.5)]
         labels[ix] = class_number
+
     return features, labels
 
 
