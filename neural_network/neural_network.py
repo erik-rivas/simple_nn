@@ -92,7 +92,7 @@ class NeuralNetwork:
 
                     if verbose and it % verbose == 0:
                         print(
-                            f"epoch: {epoch}, batch: {i_batch}, it: {it}, "
+                            f"epoch: {epoch:02d}, batch: {i_batch:05d}, it: {it:05d}, "
                             + f"loss: {loss:.3f}, "
                             + f"accuracy: {accuracy:.3f}, "
                             + f"precision: {precision:.3f}, "

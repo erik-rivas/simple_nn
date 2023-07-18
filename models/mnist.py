@@ -42,7 +42,7 @@ class MnistModel(NeuralNetwork):
     def __init__(self, random_state=101):
         np.random.seed(random_state)
 
-        self.setup_layers(no_layers=1)
+        self.setup_layers(no_layers=2)
 
         super().__init__(self.layers, loss_fn=self.loss_fn)
 

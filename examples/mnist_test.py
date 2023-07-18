@@ -100,9 +100,9 @@ def run():
     simple_classifier = MnistSimpleClassifier()
     simple_classifier.run(
         images_to_read=None,
-        epochs=10,
+        epochs=5,
         batch_size=8,
         iter_per_batch=2,
-        learning_rate=0.1,
-        verbose=10000,
+        learning_rate=0.01,
+        verbose=1000,
     )
