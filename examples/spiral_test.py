@@ -54,6 +54,7 @@ class SpiralClassifier:
             iter_per_batch=iter_per_batch,
             learning_rate=learning_rate,
             verbose=verbose,
+            live_plot=True,
         )
 
         accuracy, precision, recall, f1_score = network.evaluate(
@@ -123,7 +124,7 @@ def run():
     )
     spiral_classifier.run(
         n_samples=1000,
-        epochs=1000,
+        epochs=10000,
         batch_size=10,
         iter_per_batch=1,
         learning_rate=0.1,

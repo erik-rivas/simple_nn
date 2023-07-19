@@ -44,6 +44,30 @@ class NeuralNetwork:
         for layer in self.layers:
             layer.update(self.learning_rate)
 
+    def update_status(
+        self, y_pred, y_true, loss, epoch, i_batch, it, verbose, live_plot
+    ):
+        if verbose and it % verbose == 0:
+            accuracy, precision, recall, f1_score = self.accuracy.calculate(
+                y_pred, y_true
+            )
+            self.history["loss"].append(loss)
+            self.history["accuracy"].append(accuracy)
+
+            print(
+                f"epoch: {epoch:02d}, batch: {i_batch:05d}, it: {it:05d}, "
+                + f"loss: {loss:.3f}, "
+                + f"accuracy: {accuracy:.3f}, "
+                + f"precision: {precision:.3f}, "
+                + f"recall: {recall:.3f}, "
+                + f"f1_score: {f1_score:.3f}"
+            )
+
+            if live_plot:
+                self.plot_history(show=False)
+                plt.pause(0.001)
+                pass
+
     def train(
         self,
         X,
@@ -53,6 +77,7 @@ class NeuralNetwork:
         batch_size=128,
         iter_per_batch=10,
         verbose=100,
+        live_plot=False,
     ):
         """Train the neural network with given input and target output."""
         self.X_train = X
@@ -68,38 +93,34 @@ class NeuralNetwork:
             "accuracy": [],
         }
 
+        if live_plot:
+            # plt.ion()
+            plt.title("Real Time loss and accuracy")
+            pass
+
         it = 0
         for epoch in range(epochs):
             for i_batch in range(0, len(self.X_train), batch_size):
                 batch_X = self.X_train[i_batch : i_batch + batch_size]
                 batch_y = self.y_train[i_batch : i_batch + batch_size]
 
-                for iteration in range(iter_per_batch):
+                for _ in range(iter_per_batch):
                     y_pred = self.forward(batch_X)
                     loss = self.loss_fn.calculate(y_pred, batch_y)
                     if loss is None or math.isnan(loss):
                         raise ValueError("Loss is None or NaN")
 
-                    accuracy, precision, recall, f1_score = self.accuracy.calculate(
-                        y_pred, batch_y
-                    )
-
                     self.backward(y_pred, batch_y)
                     self.update()
 
-                    self.history["loss"].append(loss)
-                    self.history["accuracy"].append(accuracy)
+                    self.update_status(
+                        y_pred, batch_y, loss, epoch, i_batch, it, verbose, live_plot
+                    )
 
-                    if verbose and it % verbose == 0:
-                        print(
-                            f"epoch: {epoch:02d}, batch: {i_batch:05d}, it: {it:05d}, "
-                            + f"loss: {loss:.3f}, "
-                            + f"accuracy: {accuracy:.3f}, "
-                            + f"precision: {precision:.3f}, "
-                            + f"recall: {recall:.3f}, "
-                            + f"f1_score: {f1_score:.3f}"
-                        )
                     it += 1
+
+        if live_plot:
+            plt.close()
 
     def evaluate(self, X, y_true):
         """Evaluate the model with given input and target output."""
