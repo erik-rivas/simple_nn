@@ -40,11 +40,10 @@ class SimpleClassifier:
 
     def generate_network(self, epochs=500, batch_size=8, learning_rate=0.01, verbose=1):
         # Create a model
-        network = SimpleClassificationModel(
-            n_features=self.n_features,
-            n_hidden=self.n_classes,
-            n_classes=self.n_classes,
+        str_layers = (
+            f"{self.n_features}::10_tanh,10::10_tanh,10::{self.n_classes}_softmax"
         )
+        network = SimpleClassificationModel(str_layers)
         self.network = network
 
         network.train(

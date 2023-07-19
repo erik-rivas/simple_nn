@@ -1,3 +1,5 @@
+from typing import List
+
 from matplotlib import pyplot as plt
 
 from libs.idx import read_idx
@@ -12,35 +14,18 @@ from neural_network.neural_network import NeuralNetwork
 
 
 class SimpleClassificationModel(NeuralNetwork):
-    def set_sigmoid_layers(self):
-        self.layers = [
-            Layer_Dense(
-                n_features=2, n_neurons=1, activation_fn=ActivationFunctions.SIGMOID
-            ),
-        ]
-        self.loss_fn = Loss_MeanSquaredError()
+    def set_layers(self, str_layers: str):
+        str_layers = str_layers.split(",")
 
-    def set_softmax_layers(self):
-        self.layers = [
-            Layer_Dense(
-                n_features=self.n_features,
-                n_neurons=self.n_hidden,
-                activation_fn=ActivationFunctions.RELU,
-            ),
-            Layer_Dense(
-                n_features=self.n_hidden,
-                n_neurons=self.n_classes,
-                activation_fn=ActivationFunctions.SOFTMAX,
-            ),
-        ]
+        layers = []
+        for str_layer in str_layers:
+            layer = Layer_Dense.from_str(str_layer)
+            layers.append(layer)
+
+        self.layers = layers
+
+    def __init__(self, str_layers):
+        self.set_layers(str_layers)
         self.loss_fn = CategoricalCrossEntropy()
-
-    def __init__(self, n_features, n_hidden, n_classes):
-        self.n_features = n_features
-        self.n_hidden = n_hidden
-        self.n_classes = n_classes
-
-        # self.set_sigmoid_layers()
-        self.set_softmax_layers()
 
         super().__init__(self.layers, loss_fn=self.loss_fn)

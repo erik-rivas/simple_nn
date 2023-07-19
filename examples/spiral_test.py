@@ -20,6 +20,10 @@ class SpiralClassifier:
 
     def generate_data(self, n_samples):
         X, y = spiral_data(n_samples, self.n_classes)
+
+        # Add sin(X1) and sin(X2) to the features
+        X = np.column_stack((X, np.sin(X[:, 0]), np.sin(X[:, 1])))
+
         # Split into training and test sets
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=1
@@ -43,7 +47,12 @@ class SpiralClassifier:
         self, epochs, batch_size, iter_per_batch, learning_rate, verbose
     ):
         # Create a model
-        network = SimpleSpiralModel(n_classes=self.n_classes)
+        # network = SimpleSpiralModel(n_classes=self.n_classes)
+        str_layers = (
+            f"{self.n_features}::10_tanh,10::10_tanh,10::{self.n_classes}_softmax"
+        )
+
+        network = SimpleClassificationModel(str_layers)
         self.network = network
 
         network.train(
@@ -72,7 +81,7 @@ class SpiralClassifier:
         plt.figure(figsize=(10, 7))
 
         # # Plot training set
-        plt.subplot(2, 2, 1)
+        plt.subplot(2, 3, 1)
         plt.scatter(
             self.X_train[:, 0],
             self.X_train[:, 1],
@@ -88,7 +97,7 @@ class SpiralClassifier:
             plot_classes = np.argmax(self.y_pred, axis=1)
 
         # Plot test set
-        plt.subplot(2, 2, 2)
+        plt.subplot(2, 3, 2)
         plt.scatter(
             self.X_train[:, 0],
             self.X_train[:, 1],
@@ -98,6 +107,28 @@ class SpiralClassifier:
         )
         plt.title("Test set predictions")
         # plt.tight_layout()
+
+        ## Plot grid
+        # generate a grid of points with linspace
+        x_span = np.linspace(
+            min(self.X_train[:, 0]) - 0.25, max(self.X_train[:, 0]) + 0.25
+        )
+        y_span = np.linspace(
+            min(self.X_train[:, 1]) - 0.25, max(self.X_train[:, 1]) + 0.25
+        )
+        xx, yy = np.meshgrid(x_span, y_span)
+        grid = np.c_[xx.ravel(), yy.ravel()]
+        grid = np.column_stack((grid, np.sin(grid[:, 0]), np.sin(grid[:, 1])))
+
+        y_pred = self.network.predict(grid)
+
+        plt.subplot(2, 3, 3)
+        # plt.contourf(xx, yy, np.argmax(y_pred,axis=1), cmap=plt.cm.Paired)
+        # plt.contour(xx, yy, np.argmax(y_pred,axis=1), cmap=plt.cm.Paired)
+        plt.pcolormesh(
+            xx, yy, np.argmax(y_pred, axis=1).reshape(xx.shape), cmap=plt.cm.Paired
+        )
+        plt.title("Grid predictions")
 
         plt.subplot(3, 1, 3)
         self.network.plot_history(show=False)
@@ -120,11 +151,11 @@ class SpiralClassifier:
 
 def run():
     spiral_classifier = SpiralClassifier(
-        n_classes=3, n_features=2, n_hidden=64, n_samples=1000, random_state=101
+        n_classes=3, n_features=4, n_hidden=64, n_samples=1000, random_state=101
     )
     spiral_classifier.run(
         n_samples=1000,
-        epochs=10000,
+        epochs=500,
         batch_size=10,
         iter_per_batch=1,
         learning_rate=0.1,
