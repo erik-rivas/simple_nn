@@ -5,6 +5,7 @@ from sklearn.preprocessing import OneHotEncoder
 from libs.helpers import spiral_data, train_test_split
 from models.mnist import MnistModel
 from models.simple_categorical_model import SimpleClassificationModel
+from models.spiral_model import SimpleSpiralModel
 
 
 class SpiralClassifier:
@@ -42,12 +43,7 @@ class SpiralClassifier:
         self, epochs, batch_size, iter_per_batch, learning_rate, verbose
     ):
         # Create a model
-        # Create a model
-        network = SimpleClassificationModel(
-            n_features=self.n_features,
-            n_hidden=self.n_hidden,
-            n_classes=self.n_classes,
-        )
+        network = SimpleSpiralModel(n_classes=self.n_classes)
         self.network = network
 
         network.train(
@@ -128,8 +124,8 @@ def run():
     spiral_classifier.run(
         n_samples=1000,
         epochs=1000,
-        batch_size=8,
-        iter_per_batch=10,
+        batch_size=10,
+        iter_per_batch=1,
         learning_rate=0.1,
-        verbose=100,
+        verbose=1000,
     )

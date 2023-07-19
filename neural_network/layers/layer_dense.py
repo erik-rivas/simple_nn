@@ -13,6 +13,9 @@ class Layer_Dense(Layer):
         random_state: int = None,
         activation_fn: ActivationFunctions = None,
     ):
+        self.n_features = n_features
+        self.n_neurons = n_neurons
+
         if random_state:
             np.random.seed(random_state)
         self.weights = 0.01 * np.random.randn(n_features, n_neurons)
@@ -23,6 +26,28 @@ class Layer_Dense(Layer):
                 self.activation_fn = activation_fn_map[activation_fn]()
             else:
                 raise ValueError(f"Activation function {activation_fn} not found")
+
+    @classmethod
+    def from_str(cls, str_layer: str):
+        """
+        str_layer: string, e.g. "2::10_relu"
+        """
+        if "::" not in str_layer or "_" not in str_layer:
+            raise ValueError("Invalid string layer")
+
+        # split string into n_features, n_neurons, activation_fn
+        (temp, str_activation_fn) = str_layer.split("_")
+        (str_n_features, str_n_neurons) = temp.split("::")
+
+        # parse strings
+        n_features = int(str_n_features)
+        n_neurons = int(str_n_neurons)
+        activation_fn = ActivationFunctions(str_activation_fn)
+
+        dense_layer = cls(n_features, n_neurons, activation_fn=activation_fn)
+        print(dense_layer)
+
+        return dense_layer
 
     def set_weights_biases(self, weights: NDArray, biases: NDArray):
         self.weights = weights
@@ -54,7 +79,6 @@ class Layer_Dense(Layer):
         self.biases -= lr * self.biases_gradients
 
     def __str__(self) -> str:
-        if sum(self.weights.shape) > 5 or sum(self.biases.shape) > 3:
-            return f"Dense Layer: shape {self.weights.shape}"
-
-        return f"Dense Layer: {self.weights.flatten()}, {self.biases.flatten()}"
+        return (
+            f"||DenseLayer: {self.n_features}::{self.n_neurons}_{self.activation_fn} ||"
+        )

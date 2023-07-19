@@ -1,7 +1,9 @@
 import numpy as np
 
+from neural_network.activation_functions.activation import ActivationFunction
 
-class Activation_ReLU:
+
+class Activation_ReLU(ActivationFunction):
     def forward(self, inputs):
         self.output = np.maximum(0, inputs)
         self.inputs = inputs
@@ -14,5 +16,8 @@ class Activation_ReLU:
 
         return self.dinputs
 
+    def __repr__(self) -> str:
+        return "relu"
+
     def __str__(self) -> str:
-        return f"Activation ReLU"
+        return f"<Activation ReLU>"

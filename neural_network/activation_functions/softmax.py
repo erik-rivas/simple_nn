@@ -32,4 +32,7 @@ class Activation_SoftMax(ActivationFunction):
         return self.dinputs
 
     def __repr__(self) -> str:
-        return f"Activation Softmax"
+        return "softmax"
+
+    def __str__(self) -> str:
+        return f"<Activation Softmax>"

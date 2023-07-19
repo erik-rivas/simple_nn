@@ -31,6 +31,12 @@ class Activation_Sigmoid(ActivationFunction):
 
         return self.doutput
 
+    def __repr__(self) -> str:
+        return "sigmoid"
+
+    def __str__(self) -> str:
+        return f"<Activation Sigmoid>"
+
 
 if __name__ == "__main__":
     x = np.linspace(-10, 10, 100)
