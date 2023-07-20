@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from neural_network.layers.max_pool import MaxPool2D
+from neural_network.layers.max_pool import Layer_MaxPool2D
 
 
 def run():
     # Initialize a MaxPooling2D layer
-    pool = MaxPool2D(pool_size=2, stride=2)
+    pool = Layer_MaxPool2D(pool_size=2, stride=2)
 
     # Define a simple 4x4 input
     input = np.array([[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]])

@@ -16,7 +16,7 @@ from neural_network.loss_functions import CategoricalCrossEntropy
 
 class TestNeuralNetwork:
     def test_nn_line(self):
-        data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=75)
+        data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=101)
 
         features = data[0]
         labels = data[1]
@@ -47,7 +47,7 @@ class TestNeuralNetwork:
         assert res[0] == pytest.approx(0.000002, abs=1e-6)
 
     def test_nn_line_backward(self):
-        data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=75)
+        data = make_blobs(n_samples=50, n_features=2, centers=2, random_state=101)
 
         features = data[0]
         labels = data[1].reshape(-1, 1)

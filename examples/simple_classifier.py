@@ -107,7 +107,7 @@ class SimpleClassifier:
 
 def run():
     simple_classifier = SimpleClassifier(
-        n_classes=10, n_features=2, n_samples=1000, random_state=75
+        n_classes=10, n_features=2, n_samples=1000, random_state=101
     )
     simple_classifier.run(
         epochs=128,

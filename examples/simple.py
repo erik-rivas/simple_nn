@@ -38,7 +38,7 @@ def test_simple_regression():
 
 def test_linnear_classifier():
     features, labels = generate_data(
-        n_classes=2, n_features=2, n_samples=50, random_state=75
+        n_classes=2, n_features=2, n_samples=50, random_state=101
     )
 
     dense = Layer_Dense(n_features=2, n_neurons=1)

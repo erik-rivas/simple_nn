@@ -6,13 +6,13 @@ from neural_network.layers.layer_dense import Layer_Dense
 
 class TestLayer_Dense:
     def test_init(self):
-        layer = Layer_Dense(2, 3, random_state=1)
+        layer = Layer_Dense(2, 3, random_state=101)
 
         assert layer.weights.shape == (2, 3)
         assert layer.biases.shape == (1, 3)
 
     def test_forward(self):
-        layer = Layer_Dense(2, 3, random_state=1)
+        layer = Layer_Dense(2, 3, random_state=101)
         inputs = np.ones((1, 2))
 
         output = layer.forward(inputs)
@@ -22,7 +22,7 @@ class TestLayer_Dense:
         assert layer.inputs.shape == (1, 2)
 
     def test_backward(self):
-        layer = Layer_Dense(2, 3, random_state=1)
+        layer = Layer_Dense(2, 3, random_state=101)
         inputs = np.ones((1, 2))
         layer.forward(inputs)
         gradients = np.ones((1, 3))

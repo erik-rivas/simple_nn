@@ -1,7 +1,9 @@
 import numpy as np
 
+from neural_network.layers.layer_base import Layer
 
-class Conv2D:
+
+class Layer_Conv2D(Layer):
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0):
         """
         Initializes a Conv2D layer.

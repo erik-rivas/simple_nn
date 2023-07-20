@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from neural_network.layers.layer_conv2d import Conv2D
+from neural_network.layers.layer_conv2d import Layer_Conv2D
 
 
 def run():
@@ -10,7 +10,9 @@ def run():
     kernel_size = 3
 
     # Initialize a Conv2D layer
-    conv = Conv2D(in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=1)
+    conv = Layer_Conv2D(
+        in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=1
+    )
 
     conv.filters = np.zeros(
         (

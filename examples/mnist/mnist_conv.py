@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
 
 from models.mnist import MnistModel
+from models.mnist_conv import MnistModelConv
 
 
 class MnistSimpleClassifier:
@@ -27,7 +28,7 @@ class MnistSimpleClassifier:
         self, epochs, batch_size, iter_per_batch, learning_rate, verbose
     ):
         # Create a model
-        network = MnistModel(random_state=1)
+        network = MnistModelConv(random_state=101)
         self.network = network
 
         network.train(
