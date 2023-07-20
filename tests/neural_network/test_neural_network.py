@@ -66,7 +66,11 @@ class TestNeuralNetwork:
         nn = NeuralNetwork(layers=layers)
 
         nn.train(
-            X=features, y_true=labels, learning_rate=0.01, epochs=1000, verbose=100
+            X_train=features,
+            y_true=labels,
+            learning_rate=0.01,
+            epochs=1000,
+            verbose=100,
         )
 
         x = np.array([8, 10])

@@ -24,18 +24,19 @@ class Layer_MaxPool2D:
             numpy.ndarray: The output data.
         """
         self.input = input
-        in_channels, h_i, w_i = input.shape
+        n_samples, in_channels, h_i, w_i = input.shape
 
         h_o = (h_i - self.pool_size) // self.stride + 1
         w_o = (w_i - self.pool_size) // self.stride + 1
-        output = np.zeros((in_channels, h_o, w_o))
+        output = np.zeros((n_samples, in_channels, h_o, w_o))
 
         for i in range(0, h_i, self.stride):
             for j in range(0, w_i, self.stride):
-                output[:, i // self.stride, j // self.stride] = np.max(
-                    input[:, i : i + self.pool_size, j : j + self.pool_size],
-                    axis=(1, 2),
-                )
+                input_window = input[
+                    :, :, i : i + self.pool_size, j : j + self.pool_size
+                ]
+                max_value = np.max(input_window, axis=(2, 3))
+                output[:, :, i // self.stride, j // self.stride] = max_value
 
         return output
 
@@ -49,17 +50,22 @@ class Layer_MaxPool2D:
         Returns:
             d_input (numpy.ndarray): The derivative of the loss function with respect to the input of the MaxPooling2D layer.
         """
-        in_channels, h_i, w_i = self.input.shape
+        n_samples, in_channels, h_i, w_i = self.input.shape
 
         d_input = np.zeros_like(self.input)
 
         for i in range(0, h_i, self.stride):
             for j in range(0, w_i, self.stride):
-                window = self.input[:, i : i + self.pool_size, j : j + self.pool_size]
-                max_val = np.max(window, axis=(1, 2))
-                mask = window == max_val[:, None, None]
-                d_input[:, i : i + self.pool_size, j : j + self.pool_size] = (
-                    mask * dL_dy[:, i // self.stride, j // self.stride, None, None]
+                window = self.input[
+                    :, :, i : i + self.pool_size, j : j + self.pool_size
+                ]
+                max_val = np.max(window, axis=(2, 3))
+                mask = np.equal(window, max_val[:, :, None, None])
+
+                gradient = (
+                    mask * dL_dy[:, :, i // self.stride, j // self.stride, None, None]
                 )
+
+                d_input[:, :, i : i + self.pool_size, j : j + self.pool_size] = gradient
 
         return d_input

@@ -17,8 +17,8 @@ class MnistSimpleClassifier:
         y_train_onehot = one_hot.fit_transform(y_train.reshape(-1, 1))
         y_test_onehot = one_hot.fit_transform(y_test.reshape(-1, 1))
 
-        self.X_train = X_train / 255.0
-        self.X_test = X_test / 255.0
+        self.X_train = (X_train / 255.0).reshape(-1, 1, 28, 28)
+        self.X_test = (X_test / 255.0).reshape(-1, 1, 28, 28)
         self.y_train = y_train
         self.y_test = y_test
         self.y_train_onehot = y_train_onehot

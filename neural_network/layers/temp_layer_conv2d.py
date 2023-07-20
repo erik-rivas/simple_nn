@@ -19,7 +19,6 @@ class Layer_Conv2D(Layer):
             out_channels, in_channels, kernel_size, kernel_size
         )
         self.biases = np.random.randn(out_channels, 1)
-
         self.stride = stride
         self.padding = padding
 
@@ -37,8 +36,13 @@ class Layer_Conv2D(Layer):
         n_samples, in_channels, h_i, w_i = input.shape
         out_channels, _, h_f, w_f = self.filters.shape
 
-        h_o = (h_i - h_f + 2 * self.padding) // self.stride + 1
-        w_o = (w_i - w_f + 2 * self.padding) // self.stride + 1
+        # Add padding to input height and width
+        h_i_padded = h_i + 2 * self.padding
+        w_i_padded = w_i + 2 * self.padding
+
+        h_o = int(np.ceil((h_i_padded - h_f) / self.stride))
+        w_o = int(np.ceil((w_i_padded - w_f) / self.stride))
+
         self.output = np.zeros((n_samples, out_channels, h_o, w_o))
 
         self.padded_input = np.pad(
@@ -46,8 +50,8 @@ class Layer_Conv2D(Layer):
             pad_width=(
                 (0, 0),
                 (0, 0),
-                (1, 1),
-                (1, 1),
+                (self.padding, self.padding),
+                (self.padding, self.padding),
             ),
             mode="constant",
             constant_values=0,
@@ -99,42 +103,50 @@ class Layer_Conv2D(Layer):
         """
         # Get the shapes of the filters and the derivative of the input
         out_channels, _, h_f, w_f = self.filters.shape
-        n_samples, in_channels, h_i, w_i = self.output.shape
+        n_samples, in_channels, h_i, w_i = self.input.shape
 
-        # Initialize arrays to hold the gradients
         self.d_filters = np.zeros_like(self.filters)
         self.d_biases = np.zeros_like(self.biases)
         self.d_input = np.zeros_like(self.input)
 
         # Pad the derivative of the input to handle the edges of the input during the convolution
+        padded_d_input = np.pad(
+            self.d_input,
+            ((0, 0), (self.padding, self.padding), (self.padding, self.padding)),
+        )
 
         # Loop over the output channels, height, and width
         for c_out in range(out_channels):
-            for i in range(h_i):
-                for j in range(w_i):
+            for i in range(0, h_i * self.stride, self.stride):
+                for j in range(0, w_i * self.stride, self.stride):
                     # Check if the slice would go beyond the boundaries of the input
-                    if i + h_f > h_i or j + w_f > w_i:
-                        continue
+                    # if i + h_f > h_i or j + w_f > w_i:
+                    #     continue
 
                     # Loop over the input channels
                     for c_in in range(in_channels):
                         # Update the gradient of the filters
-                        current_filter = self.d_filters[c_out, c_in]
-
-                        filter_gradient = (
-                            dL_dy[:, c_out, i, j]
-                            * self.padded_input[:, c_in, i : i + h_f, j : j + w_f]
+                        self.d_filters[c_out, c_in] += (
+                            dL_dy[c_out, i // self.stride, j // self.stride]
+                            * self.padded_input[c_in, i : i + h_f, j : j + w_f]
                         )
 
-                        current_filter += filter_gradient
-
-                        # Update the gradient of the input
-                        self.d_input[c_in, i : i + h_f, j : j + w_f] += dL_dy[
-                            c_out, i, j
-                        ] * np.flip(self.filters[c_out, c_in], axis=(0, 1))
-
-            # Update the gradient of the biases
             self.d_biases[c_out] = np.sum(dL_dy[c_out, :, :])
+
+            for i in range(h_f):
+                for j in range(w_f):
+                    for c_in in range(in_channels):
+                        padded_d_input[
+                            c_in,
+                            i : i + h_i * self.stride : self.stride,
+                            j : j + w_i * self.stride : self.stride,
+                        ] += dL_dy[c_out, i // self.stride, j // self.stride] * np.flip(
+                            self.filters[c_out, c_in, i, j]
+                        )
+
+        self.d_input = padded_d_input[
+            :, self.padding : h_i + self.padding, self.padding : w_i + self.padding
+        ]
 
         return self.d_input
 

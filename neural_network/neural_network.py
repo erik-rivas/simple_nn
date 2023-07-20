@@ -70,7 +70,7 @@ class NeuralNetwork:
 
     def train(
         self,
-        X,
+        X_train,
         y_true,
         learning_rate=0.001,
         epochs=1000,
@@ -80,7 +80,7 @@ class NeuralNetwork:
         live_plot=False,
     ):
         """Train the neural network with given input and target output."""
-        self.X_train = X
+        self.X_train = X_train
         self.y_train = y_true if len(y_true.shape) > 1 else y_true.reshape(-1, 1)
 
         # Set learning rate, batch size and epochs

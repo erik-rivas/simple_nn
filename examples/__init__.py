@@ -9,7 +9,7 @@ from . import (
     tf_33,
     torch_24,
 )
-from .mnist import mnist_conv, mnist_test
+from .mnist import mnist_conv_test, mnist_test
 
 __all__ = [
     "animation_test",
@@ -22,5 +22,5 @@ __all__ = [
     "torch_24",
     "conv2d_test",
     "max_pool_test",
-    "mnist_conv",
+    "mnist_conv_test",
 ]

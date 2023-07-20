@@ -36,7 +36,7 @@ def run():
         rand_ind = np.random.randint(len(x_data), size=bach_size)
         x_sample = x_data[rand_ind].reshape((-1, 1))
         y_sample = y_true[rand_ind].reshape(-1, 1)
-        nn.train(X=x_sample, y_true=y_sample, learning_rate=0.01, verbose=1000)
+        nn.train(X_train=x_sample, y_true=y_sample, learning_rate=0.01, verbose=1000)
 
     my_data.sample(n=250).plot(kind="scatter", x="X Data", y="Y")
 

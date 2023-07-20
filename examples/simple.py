@@ -25,7 +25,7 @@ def test_simple_regression():
 
     nn = NeuralNetwork(layers=layers)
 
-    nn.train(X=x, y_true=y_true, learning_rate=0.01, epochs=1000, verbose=100)
+    nn.train(X_train=x, y_true=y_true, learning_rate=0.01, epochs=1000, verbose=100)
 
     x_pred = np.linspace(0, 10, 11).reshape((-1, 1))
     y_pred = nn.forward(x_pred)
@@ -52,7 +52,9 @@ def test_linnear_classifier():
     features = np.array(features)
     labels = np.array(labels)
 
-    nn.train(X=features, y_true=labels, learning_rate=0.01, epochs=1000, verbose=100)
+    nn.train(
+        X_train=features, y_true=labels, learning_rate=0.01, epochs=1000, verbose=100
+    )
 
     y_pred = nn.forward(features)
     print(y_pred[:10])

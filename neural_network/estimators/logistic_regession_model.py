@@ -45,7 +45,7 @@ class LogisticRegresionModel(NeuralNetwork):
             x_sample = x_data[rand_ind].reshape((-1, x_data.shape[1]))
             y_sample = y_data[rand_ind].reshape(-1, 1)
             loss = super().train(
-                X=x_sample,
+                X_train=x_sample,
                 y_true=y_sample,
                 learning_rate=learning_rate,
                 epochs=epochs,
