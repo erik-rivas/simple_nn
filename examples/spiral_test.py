@@ -123,8 +123,6 @@ class SpiralClassifier:
         y_pred = self.network.predict(grid)
 
         plt.subplot(2, 3, 3)
-        # plt.contourf(xx, yy, np.argmax(y_pred,axis=1), cmap=plt.cm.Paired)
-        # plt.contour(xx, yy, np.argmax(y_pred,axis=1), cmap=plt.cm.Paired)
         plt.pcolormesh(
             xx, yy, np.argmax(y_pred, axis=1).reshape(xx.shape), cmap=plt.cm.Paired
         )
@@ -151,7 +149,7 @@ class SpiralClassifier:
 
 def run():
     spiral_classifier = SpiralClassifier(
-        n_classes=3, n_features=4, n_hidden=64, n_samples=1000, random_state=101
+        n_classes=2, n_features=4, n_hidden=64, n_samples=1000, random_state=101
     )
     spiral_classifier.run(
         n_samples=1000,

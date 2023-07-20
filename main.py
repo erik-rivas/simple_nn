@@ -7,7 +7,7 @@ if __name__ == "__main__":
     colorama_init()
 
     # simple_classifier.run()
-    # mnist_test.run()
+    # examples.mnist_test.run()
     # examples.simple_classifier.run()
     examples.spiral_test.run()
 
