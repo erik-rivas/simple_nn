@@ -77,19 +77,14 @@ class Layer_Conv2D:
                             gradients, axis=(0, 1, 2)
                         )
                         d_biases[c_out] += np.sum(d_out[:, c_out, i, j])
-
-                        # Calculate the gradient for the input data
-                        filters = self.filters[c_out, c_in, :, :, None, None]
-                        d_out_window = d_out[:, c_out, i, j, None, None, None]
-                        gradients = filters * d_out_window
-
                         d_input_padded[
                             :,
                             c_in,
                             i * self.stride : i * self.stride + filter_height,
                             j * self.stride : j * self.stride + filter_width,
                         ] += np.sum(
-                            gradients,
+                            self.filters[c_out, c_in, :, :, None, None]
+                            * d_out[:, c_out, i, j, None, None, None],
                             axis=(1, 2),
                         )
 
