@@ -4,6 +4,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 from models.mnist import MnistModel
 from models.mnist_conv import MnistModelConv
+from models.mnist_conv2 import MnistModelConv2
 
 
 class MnistSimpleClassifier:

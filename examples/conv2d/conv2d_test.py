@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from examples.conv2d.conv2d_train import test_filter_noise_training
-from neural_network.layers.temp_layer_conv2d import Conv2D
+from neural_network.layers.layer_conv2d import Conv2D
 
 
 def test1():

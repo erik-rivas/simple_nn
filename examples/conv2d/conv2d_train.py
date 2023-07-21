@@ -2,7 +2,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from neural_network.layers.temp_layer_conv2d import Conv2D
+from neural_network.layers.layer_conv2d import Conv2D
 
 
 def mse_loss(y_true, y_pred):
