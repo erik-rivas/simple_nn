@@ -42,8 +42,8 @@ def train_conv2d(input_data, n_iterations=5000, learning_rate=0.1):
     plt.show()
 
     # Add noise to the filters
-    noise = np.random.normal(scale=0.1, size=conv2d_layer.filters.shape)
-    conv2d_layer.filters += noise
+    noise = np.random.normal(scale=10, size=conv2d_layer.filters.shape)
+    conv2d_layer.filters = noise
 
     # Gradient descent loop
     for i in range(n_iterations):
@@ -55,14 +55,14 @@ def train_conv2d(input_data, n_iterations=5000, learning_rate=0.1):
 
         # Backward pass
         d_out = mse_loss_derivative(y_true, y_pred)
-        d_filters, d_biases, _ = conv2d_layer.backward(d_out)
+        _ = conv2d_layer.backward(d_out)
 
         # Update the filters and biases using gradient descent
         conv2d_layer.update(learning_rate)
 
         # Print the loss every 500 iterations
         if i % 500 == 0:
-            print(f"Iteration {i}, Loss: {loss} d_out={d_out}")
+            print(f"Iteration {i}, Loss: {loss}")
 
     # Forward pass to get the final output
     y_pred = conv2d_layer.forward(input_data)

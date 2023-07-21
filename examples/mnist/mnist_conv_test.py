@@ -29,7 +29,7 @@ class MnistSimpleClassifier:
         self, epochs, batch_size, iter_per_batch, learning_rate, verbose
     ):
         # Create a model
-        network = MnistModelConv(random_state=101)
+        network = MnistModelConv2(random_state=101)
         self.network = network
 
         network.train(
@@ -105,6 +105,6 @@ def run():
         epochs=2,
         batch_size=10,
         iter_per_batch=1,
-        learning_rate=0.01,
+        learning_rate=0.1,
         verbose=100,
     )

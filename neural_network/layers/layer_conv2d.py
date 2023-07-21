@@ -143,7 +143,7 @@ class Conv2D:
         self.d_filters = dw
         self.d_biases = db.reshape(-1, 1)
 
-        return self.d_filters, self.d_biases, dx
+        return dx
 
     def update(self, learning_rate):
         """

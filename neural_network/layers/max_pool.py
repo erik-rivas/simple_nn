@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Layer_MaxPool2D:
+class MaxPool2D:
     def __init__(self, pool_size=2, stride=2):
         """
         Initializes a MaxPooling2D layer.

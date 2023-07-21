@@ -6,7 +6,7 @@ from neural_network.activation_functions import ActivationFunctions
 from neural_network.layers.layer_conv2d import Conv2D
 from neural_network.layers.layer_dense import Layer_Dense
 from neural_network.layers.layer_reshape import Layer_Reshape
-from neural_network.layers.max_pool import Layer_MaxPool2D
+from neural_network.layers.max_pool import MaxPool2D
 from neural_network.loss_functions.categorical_cross_entropy import (
     CategoricalCrossEntropy,
 )
@@ -16,19 +16,20 @@ from neural_network.neural_network import NeuralNetwork
 class MnistModelConv2(NeuralNetwork):
     def setup_layers(self):
         self.layers = [
-            # Input shape: (batch_size, 1, 28, 28) -> Output shape: (batch_size, 1, 28, 28)
-            Conv2D(in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=1),
+            # Input shape: (batch_size, 1, 28, 28) -> Output shape: (batch_size, 10, 28, 28)
+            Conv2D(in_channels=1, out_channels=10, kernel_size=3, stride=1, padding=1),
             # Input shape: (1, 28, 28) -> Output shape: (1, 14, 14)
-            Layer_MaxPool2D(pool_size=2, stride=2),
-            # Input shape: (batch_size, 1, 14, 14) -> Output shape: (batch_size, 1, 14, 14)
-            Conv2D(in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=1),
-            # Input shape: (1, 14, 14) -> Output shape: (1, 7, 7)
-            Layer_MaxPool2D(pool_size=2, stride=2),
-            # Input shape (1, 7, 7) -> Output shape: (1, 49)
-            Layer_Reshape(shape=(-1, 7 * 7)),
-            # Input shape: (1, 49) -> Output shape: (1, 10)
+            MaxPool2D(pool_size=2, stride=2),
+            # Input shape: (batch_size, 10, 14, 14) -> Output shape: (batch_size, 10, 14, 14)
+            Conv2D(in_channels=10, out_channels=10, kernel_size=3, stride=1, padding=1),
+            # Input shape: (10, 14, 14) -> Output shape: (10, 7, 7)
+            MaxPool2D(pool_size=2, stride=2),
+            ## Reshape the output from the convolutional layers to a 2D array
+            # Input shape (10, 7, 7) -> Output shape: (10, 49)
+            Layer_Reshape(shape=(-1, 10 * 7 * 7)),
+            # Input shape: (1, 490) -> Output shape: (1, 10)
             Layer_Dense(
-                n_features=49,
+                n_features=490,
                 n_neurons=10,
                 activation_fn=ActivationFunctions.RELU,
             ),

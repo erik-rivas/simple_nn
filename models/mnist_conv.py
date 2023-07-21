@@ -6,7 +6,7 @@ from neural_network.activation_functions import ActivationFunctions
 from neural_network.layers.layer_conv2d import Conv2D
 from neural_network.layers.layer_dense import Layer_Dense
 from neural_network.layers.layer_reshape import Layer_Reshape
-from neural_network.layers.max_pool import Layer_MaxPool2D
+from neural_network.layers.max_pool import MaxPool2D
 from neural_network.loss_functions.categorical_cross_entropy import (
     CategoricalCrossEntropy,
 )
@@ -19,7 +19,7 @@ class MnistModelConv(NeuralNetwork):
             # Input shape: (batch_size, 1, 28, 28) -> Output shape: (batch_size, 1, 28, 28)
             Conv2D(in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=1),
             # Input shape: (1, 28, 28) -> Output shape: (1, 14, 14)
-            Layer_MaxPool2D(pool_size=2, stride=2),
+            MaxPool2D(pool_size=2, stride=2),
             # Input shape (1, 14, 14) -> Output shape: (1, 196)
             Layer_Reshape(shape=(-1, 14 * 14)),
             # Input shape: (1, 196) -> Output shape: (1, 10)

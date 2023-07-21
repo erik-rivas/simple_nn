@@ -221,5 +221,5 @@ def test4():
 def run():
     # test1()
     # test2()
-    test4()
+    # test4()
     test_filter_noise_training()
