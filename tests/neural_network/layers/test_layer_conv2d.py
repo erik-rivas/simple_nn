@@ -1,11 +1,10 @@
 import numpy as np
-
-from neural_network.layers.layer_conv2d import Layer_Conv2D
+from fromneural_network.layers.layer_conv2d import Conv2D
 
 
 class TestLayerConv2d:
     # def test_forward(self):
-    #     layer = Layer_Conv2D(in_channels=1, out_channels=1, kernel_size=2, padding=1)
+    #     layer = Conv2D(in_channels=1, out_channels=1, kernel_size=2, padding=1)
     #     input = np.array(
     #         [
     #             [
@@ -28,7 +27,7 @@ class TestLayerConv2d:
     #     assert np.allclose(output, expected_output, atol=1e-6)
 
     # def test_backward(self):
-    #     layer = Layer_Conv2D(in_channels=1, out_channels=1, kernel_size=3, padding=1)
+    #     layer = Conv2D(in_channels=1, out_channels=1, kernel_size=3, padding=1)
     #     input = np.array(
     #         [
     #             [
@@ -40,9 +39,7 @@ class TestLayerConv2d:
 
     def test_forward_backward(self):
         # Initialize Conv2D layer
-        conv = Layer_Conv2D(
-            in_channels=1, out_channels=1, kernel_size=2, stride=1, padding=1
-        )
+        conv = Conv2D(in_channels=1, out_channels=1, kernel_size=2, stride=1, padding=1)
 
         # Set filters and biases to known values
         conv.filters = np.array([[[[1, 0], [0, 1]]]])

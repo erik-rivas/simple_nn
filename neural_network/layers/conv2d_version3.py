@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Layer_Conv2D:
+class Conv2D:
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=1):
         self.filters = np.random.randn(
             out_channels, in_channels, kernel_size, kernel_size

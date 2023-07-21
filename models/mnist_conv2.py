@@ -13,22 +13,26 @@ from neural_network.loss_functions.categorical_cross_entropy import (
 from neural_network.neural_network import NeuralNetwork
 
 
-class MnistModelConv(NeuralNetwork):
+class MnistModelConv2(NeuralNetwork):
     def setup_layers(self):
         self.layers = [
             # Input shape: (batch_size, 1, 28, 28) -> Output shape: (batch_size, 1, 28, 28)
             Conv2D(in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=1),
             # Input shape: (1, 28, 28) -> Output shape: (1, 14, 14)
             Layer_MaxPool2D(pool_size=2, stride=2),
-            # Input shape (1, 14, 14) -> Output shape: (1, 196)
-            Layer_Reshape(shape=(-1, 14 * 14)),
-            # Input shape: (1, 196) -> Output shape: (1, 10)
+            # Input shape: (batch_size, 1, 14, 14) -> Output shape: (batch_size, 1, 14, 14)
+            Conv2D(in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=1),
+            # Input shape: (1, 14, 14) -> Output shape: (1, 7, 7)
+            Layer_MaxPool2D(pool_size=2, stride=2),
+            # Input shape (1, 7, 7) -> Output shape: (1, 49)
+            Layer_Reshape(shape=(-1, 7 * 7)),
+            # Input shape: (1, 49) -> Output shape: (1, 10)
             Layer_Dense(
-                n_features=196,
+                n_features=49,
                 n_neurons=10,
                 activation_fn=ActivationFunctions.RELU,
             ),
-            # Input shape: (1, 196) -> Output shape: (1, 10)
+            # Input shape: (1, 10) -> Output shape: (1, 10)
             Layer_Dense(
                 n_features=10,
                 n_neurons=self.n_classes,

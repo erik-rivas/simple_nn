@@ -1,6 +1,5 @@
 from . import (
     animation_test,
-    conv2d_test,
     max_pool_test,
     simple_classifier,
     spiral_test,
@@ -9,6 +8,7 @@ from . import (
     tf_33,
     torch_24,
 )
+from .conv2d import conv2d_test
 from .mnist import mnist_conv_test, mnist_test
 
 __all__ = [
