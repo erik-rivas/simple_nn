@@ -69,3 +69,9 @@ class Layer_MaxPool2D:
                 d_input[:, :, i : i + self.pool_size, j : j + self.pool_size] = gradient
 
         return d_input
+
+    def update(self, _):
+        """
+        This layer has no weights to update.
+        """
+        pass

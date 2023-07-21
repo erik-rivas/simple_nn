@@ -3,13 +3,16 @@ import numpy as np
 
 class Layer_Conv2D:
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=1):
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
+        self.stride = stride
+        self.padding = padding
+
         self.filters = np.random.randn(
             out_channels, in_channels, kernel_size, kernel_size
         )
         self.biases = np.random.randn(out_channels, 1)
-
-        self.stride = stride
-        self.padding = padding
 
     def set_weights_biases(self, filters, biases):
         self.filters = filters
@@ -79,8 +82,14 @@ class Layer_Conv2D:
                         d_biases[c_out] += np.sum(d_out[:, c_out, i, j])
 
                         # Calculate the gradient for the input data
-                        filters = self.filters[c_out, c_in, :, :, None, None]
-                        d_out_window = d_out[:, c_out, i, j, None, None, None]
+                        filters = self.filters[c_out, c_in, :, :]
+                        d_out_window = (
+                            d_out[:, c_out, i, j]
+                            .reshape(-1, 1, 1)
+                            .repeat(self.kernel_size, axis=1)
+                            .repeat(self.kernel_size, axis=2)
+                        )
+                        # print(f"filters.shap:e{filters.shape}, d_out_window.shape:{d_out_window.shape}")
                         gradients = filters * d_out_window
 
                         d_input_padded[
@@ -88,17 +97,17 @@ class Layer_Conv2D:
                             c_in,
                             i * self.stride : i * self.stride + filter_height,
                             j * self.stride : j * self.stride + filter_width,
-                        ] += np.sum(
-                            gradients,
-                            axis=(1, 2),
-                        )
+                        ] += np.sum(gradients)
 
         d_input = d_input_padded[
             :, :, self.padding : -self.padding, self.padding : -self.padding
         ]
 
+        self.d_filters = d_filters
+        self.d_biases = d_biases
+
         return d_filters, d_biases, d_input
 
-    def update(self, d_filters, d_biases, learning_rate):
-        self.filters -= learning_rate * d_filters
-        self.biases -= learning_rate * d_biases
+    def update(self, learning_rate):
+        self.filters -= learning_rate * self.d_filters
+        self.biases -= learning_rate * self.d_biases

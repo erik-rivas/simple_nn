@@ -267,11 +267,11 @@ def test_line_detector():
 
     # Initialize the kernels for a vertical line and horizontal line detectors
     conv2d_layer.filters[0, 0, :, :] = np.array(
-        [[1, 0, -1], [1, 0, -1], [1, 0, -1]]
+        [[0, 1, 0], [0, 1, 0], [0, 1, 0]]
     )  # vertical line detector
 
     conv2d_layer.filters[1, 0, :, :] = np.array(
-        [[1, 1, 1], [0, 0, 0], [-1, -1, -1]]
+        [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
     )  # horizontal line detector
 
     # Forward pass
@@ -281,7 +281,8 @@ def test_line_detector():
     assert output_data.shape == (1, 2, 7, 7), "Output shape is incorrect"
 
     # Backward pass
-    d_out = np.ones((1, 2, 7, 7))  # use ones instead of random numbers for simplicity
+    d_out = np.ones((1, 2, 7, 7)) + np.random.normal(scale=0.1, size=output_data.shape)
+
     d_filters, d_biases, d_input = conv2d_layer.backward(d_out)
 
     # Check gradient shapes
@@ -301,6 +302,7 @@ def test_line_detector():
     axs[0].set_title("Vertical Line Detection")
     axs[1].imshow(output_data[0, 1, :, :], cmap="gray")
     axs[1].set_title("Horizontal Line Detection")
+    plt.show()
 
     # Return the outputs
     return output_data, d_filters, d_biases, d_input
@@ -314,6 +316,6 @@ def test4():
 
 def run():
     # test1()
-    test2()
-    test3()
+    # test2()
+    # test3()
     test4()
