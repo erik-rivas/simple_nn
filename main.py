@@ -12,6 +12,7 @@ if __name__ == "__main__":
     # examples.spiral_test.run()
     # examples.max_pool_test.run()
     # examples.conv2d_test.run()
+    # examples.max_pool_test.run()
     examples.mnist_conv_test.run()
 
     print(f"\n\n{Fore.GREEN}This is {Fore.RED}done! 🏁🏁🏁{Style.RESET_ALL}!!!\n\n")

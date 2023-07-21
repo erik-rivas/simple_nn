@@ -1,17 +1,16 @@
-import matplotlib.pyplot as plt
 import numpy as np
 
 from neural_network.layers.max_pool import MaxPool2D
 
 
-def run():
+def test_maxpool2d():
+    # Create a MaxPool2D layer with a 2x2 pooling window and stride of 2
     maxpool2d = MaxPool2D(pool_size=2, stride=2)
 
     # Create a simple 4x4 input matrix
     input_data = np.array(
         [[[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]]]
     )
-    input_data.reshape(1, 1, 4, 4)
 
     # Compute the output of the MaxPool2D layer
     output_data = maxpool2d.forward(input_data)
@@ -36,3 +35,7 @@ def run():
     assert np.allclose(
         d_input, expected_d_input
     ), f"Expected {expected_d_input}, but got {d_input}"
+
+
+def run():
+    test_maxpool2d()

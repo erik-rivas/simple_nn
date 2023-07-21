@@ -17,7 +17,7 @@ class MnistModelConv2(NeuralNetwork):
     def setup_layers(self):
         self.layers = [
             # Input shape: (batch_size, 1, 28, 28) -> Output shape: (batch_size, 10, 28, 28)
-            Conv2D(in_channels=1, out_channels=10, kernel_size=3, stride=1, padding=1),
+            Conv2D(in_channels=1, out_channels=16, kernel_size=5, stride=1, padding=1),
             # Input shape: (1, 28, 28) -> Output shape: (1, 14, 14)
             MaxPool2D(pool_size=2, stride=2),
             # Input shape: (batch_size, 10, 14, 14) -> Output shape: (batch_size, 10, 14, 14)
