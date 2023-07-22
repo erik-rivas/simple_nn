@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 
 from libs.idx import read_idx
 from neural_network.activation_functions import ActivationFunctions
+from neural_network.activation_functions.relu import Activation_ReLU
 from neural_network.layers.layer_conv2d import Conv2D
 from neural_network.layers.layer_dense import Layer_Dense
 from neural_network.layers.layer_reshape import Layer_Reshape
@@ -18,10 +19,12 @@ class MnistModelConv2(NeuralNetwork):
         self.layers = [
             # Input shape: (batch_size, 1, 28, 28) -> Output shape: (batch_size, 16, 28, 28)
             Conv2D(in_channels=1, out_channels=16, kernel_size=5, stride=1, padding=2),
+            Activation_ReLU(),
             # Input shape: (batch_size, 16, 28, 28) -> Output shape: (batch_size, 16, 14, 14)
             MaxPool2D(pool_size=2, stride=2),
             # Input shape: (batch_size, 16, 14, 14) -> Output shape: (batch_size, 32, 14, 14)
             Conv2D(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=2),
+            Activation_ReLU(),
             # Input shape: (32, 14, 14) -> Output shape: (32, 7, 7)
             MaxPool2D(pool_size=2, stride=2),
             ## Reshape the output from the convolutional layers to a 2D array
@@ -31,14 +34,14 @@ class MnistModelConv2(NeuralNetwork):
             Layer_Dense(
                 n_features=2048,
                 n_neurons=10,
-                activation_fn=ActivationFunctions.RELU,
-            ),
-            # Input shape: (1, 10) -> Output shape: (1, 10)
-            Layer_Dense(
-                n_features=10,
-                n_neurons=self.n_classes,
                 activation_fn=ActivationFunctions.SOFTMAX,
             ),
+            # Input shape: (1, 10) -> Output shape: (1, 10)
+            # Layer_Dense(
+            #     n_features=10,
+            #     n_neurons=self.n_classes,
+            #     activation_fn=ActivationFunctions.SOFTMAX,
+            # ),
         ]
         self.loss_fn = CategoricalCrossEntropy()
 

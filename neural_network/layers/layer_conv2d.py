@@ -23,10 +23,14 @@ class Conv2D:
         self.padding = padding
 
         # Initialize filters and biases with random values
-        self.filters = np.random.randn(
-            out_channels, in_channels, kernel_size, kernel_size
+        self.filters = np.random.normal(
+            scale=0.1,
+            size=(out_channels, in_channels, kernel_size, kernel_size),
         ).astype(np.float32)
-        self.biases = np.random.randn(out_channels, 1).astype(np.float32)
+        self.biases = np.random.normal(
+            scale=0.1,
+            size=(out_channels, 1),
+        ).astype(np.float32)
 
     def set_weights_biases(self, filters, biases):
         """
