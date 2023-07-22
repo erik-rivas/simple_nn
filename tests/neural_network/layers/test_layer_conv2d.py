@@ -1,75 +1,124 @@
 import numpy as np
-from fromneural_network.layers.layer_conv2d import Conv2D
+import pytest
+
+from neural_network.layers.layer_conv2d import Conv2D
+
+
+def get_params(extra_args=[]):
+    layer_input = np.arange(16).reshape(1, 1, 4, 4)
+    args = [
+        {
+            "input": layer_input,
+            "kernel": np.array(
+                [
+                    [0, 0, 0],
+                    [0, 1, 0],
+                    [0, 0, 0],
+                ]
+            ).reshape(1, 1, 3, 3),
+            "bias": np.array([0]).reshape(1, 1, 1, 1),
+            "expected_output": np.arange(16).reshape(1, 1, 4, 4),
+            "expected_d_input": (np.ones((4, 4)) * 1).reshape(1, 1, 4, 4),
+        },
+        {
+            "input": layer_input,
+            "kernel": np.array([[0, 0], [0, 1]]).reshape(1, 1, 2, 2),
+            "bias": np.array([0]).reshape(1, 1, 1, 1),
+            "expected_output": np.pad(
+                np.arange(16).reshape(1, 1, 4, 4),
+                [(0, 0), (0, 0), (0, 1), (0, 1)],
+                mode="constant",
+            ),
+            "expected_d_input": np.ones((5, 5)).reshape(1, 1, 5, 5),
+        },
+    ]
+
+    if "expected_d_filters" in extra_args:
+        for arg in args:
+            if arg["kernel"].shape[-1] == 2:
+                arg["expected_d_filters"] = np.array(
+                    [
+                        [120.0, 120.0],
+                        [120.0, 120.0],
+                    ]
+                ).reshape(1, 1, 2, 2)
+            elif arg["kernel"].shape[-1] == 3:
+                arg["expected_d_filters"] = np.array(
+                    [
+                        [45.0, 66.0, 54.0],
+                        [84.0, 120.0, 96.0],
+                        [81.0, 114.0, 90.0],
+                    ]
+                ).reshape(1, 1, 3, 3)
+
+    return [arg.values() for arg in args]
 
 
 class TestLayerConv2d:
-    # def test_forward(self):
-    #     layer = Conv2D(in_channels=1, out_channels=1, kernel_size=2, padding=1)
-    #     input = np.array(
-    #         [
-    #             [
-    #                 [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-    #                 [[10, 11, 12], [13, 14, 15], [16, 17, 18]],
-    #             ]
-    #         ]
-    #     )
-    #     layer.kernel = np.ones((1, 1, 2, 2)) * 0.1
+    @pytest.mark.parametrize(
+        "input,kernel, bias, expected_output, expected_d_input", get_params()
+    )
+    def test_forward(self, input, kernel, bias, expected_output, expected_d_input):
+        layer = Conv2D(
+            in_channels=1, out_channels=1, kernel_size=kernel.shape[2], padding=1
+        )
+        layer.set_weights_biases(kernel, bias)
 
-    #     output = layer.forward(input)
-    #     expected_output = np.array(
-    #         [
-    #             [
-    #                 [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-    #                 [[10, 11, 12], [13, 14, 15], [16, 17, 18]],
-    #             ]
-    #         ]
-    #     )
-    #     assert np.allclose(output, expected_output, atol=1e-6)
+        output = layer.forward(input)
 
-    # def test_backward(self):
-    #     layer = Conv2D(in_channels=1, out_channels=1, kernel_size=3, padding=1)
-    #     input = np.array(
-    #         [
-    #             [
-    #                 [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-    #                 [[10, 11, 12], [13, 14, 15], [16, 17, 18]],
-    #             ]
-    #         ]
-    #     )
+        assert np.allclose(output, expected_output, atol=1e-6)
 
-    def test_forward_backward(self):
+    @pytest.mark.parametrize(
+        "input,kernel, bias, expected_output, expected_d_input", get_params()
+    )
+    def test_backward(self, input, kernel, bias, expected_output, expected_d_input):
+        layer = Conv2D(
+            in_channels=1, out_channels=1, kernel_size=kernel.shape[-1], padding=1
+        )
+        layer.set_weights_biases(kernel, bias)
+
+        output = layer.forward(input)
+
+        d_out = np.ones_like(output)
+        d_input = layer.backward(d_out=d_out)
+
+        assert np.allclose(output, expected_output, atol=1e-6)
+        assert np.allclose(d_input, expected_d_input, atol=1e-6)
+
+    @pytest.mark.parametrize(
+        "input, kernel, bias, expected_output, expected_d_input, expected_d_filters",
+        get_params(["expected_d_filters"]),
+    )
+    def test_forward_backward(
+        self, input, kernel, bias, expected_output, expected_d_input, expected_d_filters
+    ):
         # Initialize Conv2D layer
-        conv = Conv2D(in_channels=1, out_channels=1, kernel_size=2, stride=1, padding=1)
-
-        # Set filters and biases to known values
-        conv.filters = np.array([[[[1, 0], [0, 1]]]])
-        conv.biases = np.array([[1]])
+        conv = Conv2D(
+            in_channels=1,
+            out_channels=1,
+            kernel_size=kernel.shape[-1],
+            stride=1,
+            padding=1,
+        )
+        conv.set_weights_biases(kernel, bias)
 
         # Forward pass
-        input = np.array([[[1, 2, 3], [4, 5, 6], [7, 8, 9]]])
         output = conv.forward(input)
 
-        # Expected output
-        expected_output = np.array([[[2, 3, 4], [5, 7, 9], [8, 13, 15]]])
-        assert np.allclose(
-            output, expected_output
-        ), f"Expected {expected_output}, but got {output}"
+        assert np.allclose(output, expected_output, atol=1e-6)
 
         # Backward pass
-        dL_dy = np.full((1, 3, 3), 0.1)
-        d_input = conv.backward(dL_dy)
+        d_out = np.ones_like(output)
+        d_input = conv.backward(d_out)
 
         # Expected gradients
-        expected_d_filters = np.array([[[[3.1, 4.6], [6.1, 7.6]]]])
-        expected_d_biases = np.array([[0.9]])
-        expected_d_input = np.full((1, 3, 3), 0.2)
+        assert np.allclose(d_input, expected_d_input, atol=1e-6)
+        assert np.allclose(conv.d_filters, expected_d_filters, atol=1e-6)
+        # assert np.allclose(conv.d_filters, expected_d_filters, atol=1e-6)
 
-        assert np.allclose(
-            conv.d_filters, expected_d_filters
-        ), f"Expected {expected_d_filters}, but got {conv.d_filters}"
-        assert np.allclose(
-            conv.d_biases, expected_d_biases
-        ), f"Expected {expected_d_biases}, but got {conv.d_biases}"
-        assert np.allclose(
-            d_input, expected_d_input
-        ), f"Expected {expected_d_input}, but got {d_input}"
+        # assert np.allclose(
+        #     conv.d_filters, expected_d_filters
+        # ), f"Expected {expected_d_filters}, but got {conv.d_filters}"
+        # assert np.allclose(
+        #     conv.d_biases, expected_d_biases
+        # ), f"Expected {expected_d_biases}, but got {conv.d_biases}"

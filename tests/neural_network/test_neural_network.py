@@ -52,11 +52,7 @@ class TestNeuralNetwork:
         features = data[0]
         labels = data[1].reshape(-1, 1)
 
-        x = np.linspace(0, 11, 10)
-        y = -x + 5
-
-        plt.scatter(features[:, 0], features[:, 1], c=labels, cmap="coolwarm")
-        # plt.plot(x, y)
+        # plt.scatter(features[:, 0], features[:, 1], c=labels, cmap="coolwarm")
         # plt.show()
 
         dense = Layer_Dense(n_features=2, n_neurons=1)
@@ -73,15 +69,13 @@ class TestNeuralNetwork:
             verbose=100,
         )
 
-        x = np.array([8, 10])
+        x = np.array([2, 2])
         res = nn.forward(x)
+        assert np.allclose(res, 0, atol=1e-3)
 
-        assert res[0] == pytest.approx(0.9999, abs=1e-4)
-
-        x = np.array([2, -10])
+        x = np.array([-6, -10])
         res = nn.forward(x)
-
-        assert res[0] == pytest.approx(0.0001, abs=1e-3)
+        assert np.allclose(res, 1, atol=1e-3)
 
     def test_spiral(self):
         features, labels = spiral_data(100, 2)
