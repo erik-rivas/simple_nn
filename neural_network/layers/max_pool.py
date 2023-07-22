@@ -23,7 +23,7 @@ class MaxPool2D:
         Returns:
             numpy.ndarray: The output data.
         """
-        self.input = input
+        self.last_input_data = input
         n_samples, in_channels, h_i, w_i = input.shape
 
         h_o = (h_i - self.pool_size) // self.stride + 1
@@ -38,6 +38,7 @@ class MaxPool2D:
                 max_value = np.max(input_window, axis=(2, 3))
                 output[:, :, i // self.stride, j // self.stride] = max_value
 
+        self.last_output_data = output
         return output
 
     def backward(self, dL_dy):
@@ -50,13 +51,13 @@ class MaxPool2D:
         Returns:
             d_input (numpy.ndarray): The derivative of the loss function with respect to the input of the MaxPooling2D layer.
         """
-        n_samples, in_channels, h_i, w_i = self.input.shape
+        n_samples, in_channels, h_i, w_i = self.last_input_data.shape
 
-        d_input = np.zeros_like(self.input)
+        d_input = np.zeros_like(self.last_input_data)
 
         for i in range(0, h_i, self.stride):
             for j in range(0, w_i, self.stride):
-                window = self.input[
+                window = self.last_input_data[
                     :, :, i : i + self.pool_size, j : j + self.pool_size
                 ]
                 max_val = np.max(window, axis=(2, 3))
@@ -75,3 +76,6 @@ class MaxPool2D:
         This layer has no weights to update.
         """
         pass
+
+    def __str__(self) -> str:
+        return f"||MaxPool2D: {self.last_input_data.shape} => {self.last_output_data.shape} ||"

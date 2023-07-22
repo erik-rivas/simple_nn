@@ -16,20 +16,20 @@ from neural_network.neural_network import NeuralNetwork
 class MnistModelConv2(NeuralNetwork):
     def setup_layers(self):
         self.layers = [
-            # Input shape: (batch_size, 1, 28, 28) -> Output shape: (batch_size, 10, 28, 28)
-            Conv2D(in_channels=1, out_channels=16, kernel_size=5, stride=1, padding=1),
-            # Input shape: (1, 28, 28) -> Output shape: (1, 14, 14)
+            # Input shape: (batch_size, 1, 28, 28) -> Output shape: (batch_size, 16, 28, 28)
+            Conv2D(in_channels=1, out_channels=16, kernel_size=5, stride=1, padding=2),
+            # Input shape: (batch_size, 16, 28, 28) -> Output shape: (batch_size, 16, 14, 14)
             MaxPool2D(pool_size=2, stride=2),
-            # Input shape: (batch_size, 10, 14, 14) -> Output shape: (batch_size, 10, 14, 14)
-            Conv2D(in_channels=10, out_channels=10, kernel_size=3, stride=1, padding=1),
-            # Input shape: (10, 14, 14) -> Output shape: (10, 7, 7)
+            # Input shape: (batch_size, 16, 14, 14) -> Output shape: (batch_size, 32, 14, 14)
+            Conv2D(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=2),
+            # Input shape: (32, 14, 14) -> Output shape: (32, 7, 7)
             MaxPool2D(pool_size=2, stride=2),
             ## Reshape the output from the convolutional layers to a 2D array
-            # Input shape (10, 7, 7) -> Output shape: (10, 49)
-            Layer_Reshape(shape=(-1, 10 * 7 * 7)),
-            # Input shape: (1, 490) -> Output shape: (1, 10)
+            # Input shape (32, 7, 7) -> Output shape: (1, 2048)
+            Layer_Reshape(shape=(-1, 32 * 8 * 8)),
+            # Input shape: (1, 1568) -> Output shape: (1, 2048)
             Layer_Dense(
-                n_features=490,
+                n_features=2048,
                 n_neurons=10,
                 activation_fn=ActivationFunctions.RELU,
             ),
@@ -42,13 +42,13 @@ class MnistModelConv2(NeuralNetwork):
         ]
         self.loss_fn = CategoricalCrossEntropy()
 
-    def __init__(self, random_state=101):
+    def __init__(self, random_state=101, debug_verbose=False):
         np.random.seed(random_state)
         self.n_classes = 10
 
         self.setup_layers()
 
-        super().__init__(self.layers, loss_fn=self.loss_fn)
+        super().__init__(self.layers, loss_fn=self.loss_fn, debug_verbose=debug_verbose)
 
     @staticmethod
     def get_mnist(items_to_read=10):

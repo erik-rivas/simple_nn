@@ -154,3 +154,6 @@ class Conv2D:
         """
         self.filters -= learning_rate * self.d_filters
         self.biases -= learning_rate * self.d_biases
+
+    def __str__(self) -> str:
+        return f"||Conv2D: {self.last_input_data.shape} => {self.last_output_data_shape} ||"
