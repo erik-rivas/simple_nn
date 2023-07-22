@@ -36,12 +36,6 @@ class MnistModelConv2(NeuralNetwork):
                 n_neurons=10,
                 activation_fn=ActivationFunctions.SOFTMAX,
             ),
-            # Input shape: (1, 10) -> Output shape: (1, 10)
-            # Layer_Dense(
-            #     n_features=10,
-            #     n_neurons=self.n_classes,
-            #     activation_fn=ActivationFunctions.SOFTMAX,
-            # ),
         ]
         self.loss_fn = CategoricalCrossEntropy()
 
