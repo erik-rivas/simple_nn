@@ -21,8 +21,6 @@ def spiral_data(samples=100, classes=3):
     return features, labels
 
 
-import numpy as np
-
 
 def train_test_split(*arrays, test_size=0.25, random_state=None, shuffle=True):
     """
@@ -90,6 +88,13 @@ def generate_data(n_classes=2, n_features=2, n_samples=20, random_state=101):
     y = data[1].reshape(-1, 1)
 
     return X, y
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def tanh(x):
+    return np.tanh(x)
+
 
 
 if __name__ == "__main__":

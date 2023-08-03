@@ -7,6 +7,7 @@ from . import (
     tf_32,
     tf_33,
     torch_24,
+    lstm,
 )
 from .conv2d import conv2d_test
 from .mnist import mnist_conv_test, mnist_test
@@ -23,4 +24,5 @@ __all__ = [
     "conv2d_test",
     "max_pool_test",
     "mnist_conv_test",
+    "lstm",
 ]
